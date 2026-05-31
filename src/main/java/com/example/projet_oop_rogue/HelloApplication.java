@@ -10,9 +10,12 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        // 1. On pointe vers le chemin absolu de ta nouvelle WelcomePage
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/projet_oop_rogue/fxml/WelcomePage.fxml"));        // 2. On ajuste la taille de la fenêtre pour correspondre à notre HBox (800x600)
+        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+
+        // 3. On met un titre professionnel à la fenêtre
+        stage.setTitle("Rogue-like - Création du personnage");
         stage.setScene(scene);
         stage.show();
     }
