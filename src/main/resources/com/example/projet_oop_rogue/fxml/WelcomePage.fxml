@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.image.ImageView?>
 <HBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_oop_rogue.controllers.WelcomePageController">
     <children>
         <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="400.0" spacing="20.0">
@@ -32,6 +33,12 @@
                         <Button fx:id="mageButton" mnemonicParsing="false" onAction="#onMageSelected" text="Mage" />
                         <Button fx:id="knightButton" mnemonicParsing="false" onAction="#onKnightSelected" text="Chevalier" />
                         <Button fx:id="thiefButton" mnemonicParsing="false" onAction="#onThiefSelected" text="Voleur" />
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER" prefHeight="120.0" prefWidth="300.0">
+                    <children>
+                        <ImageView fx:id="characterImageView" fitHeight="120.0" fitWidth="120.0" preserveRatio="true" />
                     </children>
                 </HBox>
 
