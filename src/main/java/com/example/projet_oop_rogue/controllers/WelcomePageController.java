@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+// On importe la classe ImageView pour l'affichage de l'avatar du personnage
+import javafx.scene.image.ImageView;
 
 public class WelcomePageController {
 
@@ -35,6 +37,9 @@ public class WelcomePageController {
 
     @FXML
     private Button playButton; // Bouton principal pour lancer le jeu
+
+    @FXML
+    private ImageView characterImageView; // Composant d'affichage de l'avatar du personnage
 
     // ========================================================================
     // 2. VARIABLES DE LOGIQUE INTERNE
@@ -71,6 +76,7 @@ public class WelcomePageController {
         selectedClass = "Mage"; // Mémorisation du choix
         // Mise à jour de l'affichage avec les statistiques du Mage
         statsDisplay.setText("Classe : MAGE\n\nPoints de vie (HP) : 80\nDégâts : 25\nSpécialité : Attaque magique à distance.");
+        updateCharacterImage("mage.png"); // Chargement de l'image correspondante
     }
 
     /**
@@ -81,6 +87,7 @@ public class WelcomePageController {
         selectedClass = "Chevalier"; // Mémorisation du choix
         // Mise à jour de l'affichage avec les statistiques du Chevalier
         statsDisplay.setText("Classe : CHEVALIER\n\nPoints de vie (HP) : 150\nDégâts : 15\nSpécialité : Haute défense et armure lourde.");
+        updateCharacterImage("chevalier.png"); // Chargement de l'image correspondante
     }
 
     /**
@@ -91,6 +98,7 @@ public class WelcomePageController {
         selectedClass = "Voleur"; // Mémorisation du choix
         // Mise à jour de l'affichage avec les statistiques du Voleur
         statsDisplay.setText("Classe : VOLEUR\n\nPoints de vie (HP) : 100\nDégâts : 20\nSpécialité : Esquive rapide et coups critiques.");
+        updateCharacterImage("voleur.png"); // Chargement de l'image correspondante
     }
 
     // ========================================================================
@@ -177,5 +185,25 @@ public class WelcomePageController {
         alert.setContentText(message);
         alert.showAndWait(); // Affichage de la fenêtre et attente de validation
     }
+
+    /**
+     * Charge et affiche dynamiquement l'image du personnage depuis le dossier des ressources.
+     * @param fileName Nom du fichier image (avec extension .png)
+     */
+    private void updateCharacterImage(String fileName) {
+        try {
+            // Construction du chemin absolu vers le dossier assets
+            String imagePath = getClass().getResource("/com/example/projet_oop_rogue/assets/characters/" + fileName).toExternalForm();
+
+            // Instanciation de l'objet Image et injection dans la vue
+            javafx.scene.image.Image characterImage = new javafx.scene.image.Image(imagePath);
+            characterImageView.setImage(characterImage);
+
+        } catch (NullPointerException e) {
+            // Sécurisation : empêche le plantage du jeu si le fichier image est manquant ou mal nommé
+            System.err.println("Avertissement : L'image '" + fileName + "' est introuvable dans le dossier assets/characters/");
+        }
+    }
+
 }
 
