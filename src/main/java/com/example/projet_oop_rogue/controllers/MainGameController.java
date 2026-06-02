@@ -34,6 +34,17 @@ public class MainGameController {
     private String playerName; // Variable pour stocker nom du joueur (reçu de l'écran d'accueil)
     private String heroClass; // Variable pour stocker la classe choisie : Mage, Chevalier ou Voleur
 
+    // Configuration de la grille d'ffichage pour le MainGame
+    private static final int GRID_WIDTH = 15;  // Nombre de colonnes (axe X)
+    private static final int GRID_HEIGHT = 10; // Nombre de lignes (axe Y)
+    private static final int TILE_SIZE = 50;   // Taille de chaque case en pixels (50x50)
+
+    // Entités sur la carte
+    private int playerX; // Position actuelle du joueur sur l'axe X (Colonnes)
+    private int playerY; // Position actuelle du joueur sur l'axe Y (Lignes)
+    private javafx.scene.image.ImageView playerSprite; // L'image physique sur la grille
+
+
     // ========================================================================
     // 3. MÉTHODES D'INITIALISATION ET DE TRANSFERT DE DONNÉES
     // ========================================================================
@@ -81,6 +92,18 @@ public class MainGameController {
 
         // Ajout d'un premier message d'ambiance dans la console de combat
         logAction(this.playerName + " le " + this.heroClass + " entre dans le donjon !");
+
+        // 1. Appelle méthode pour la génération visuelle de la carte (Le sol)
+        generateDungeon();
+
+        // 2. Appelle méthode pour l'apparition du joueur
+        spawnPlayer();
+
+        // 3. Appelle méthode pour l'activation des contrôles clavier
+        setupControls();
+
+
+
     }
 
     // ========================================================================
@@ -127,6 +150,151 @@ public class MainGameController {
             battleLogs.appendText("\n> " + message);
         }
     }
+
+    // ========================================================================
+    // 6. GÉNÉRATION DE LA CARTE (MOTEUR 2D)
+    // ========================================================================
+
+    /**
+     * Génère la grille visuelle du donjon de manière dynamique.
+     * Utilise une double boucle (X, Y) pour remplir le GridPane avec des cases (StackPane).
+     */
+    private void generateDungeon() {
+        // 1. Nettoyage de sécurité : on vide la grille au cas où elle contiendrait déjà des éléments
+        gameBoard.getChildren().clear();
+
+        // 2. Parcours mathématique de la matrice (Lignes d'abord, puis Colonnes)
+        for (int y = 0; y < GRID_HEIGHT; y++) {
+            for (int x = 0; x < GRID_WIDTH; x++) {
+
+                // 3. Création de la case (tuile)
+                javafx.scene.layout.StackPane tile = new javafx.scene.layout.StackPane();
+
+                // 4. Forcer la taille de la case pour avoir un carré parfait
+                tile.setPrefSize(TILE_SIZE, TILE_SIZE);
+                tile.setMinSize(TILE_SIZE, TILE_SIZE);
+                tile.setMaxSize(TILE_SIZE, TILE_SIZE);
+
+                // 5. Stylisation temporaire via CSS (Couleur de fond et bordure pour voir le quadrillage)
+                // Plus tard, nous remplacerons cela par des ImageView pour le sol
+                tile.setStyle("-fx-background-color: #34495e; -fx-border-color: #2c3e50; -fx-border-width: 1px;");
+
+                // 6. Ajout de la case dans la grille graphique
+                // ATTENTION : En JavaFX, la méthode add() prend les arguments dans l'ordre (Colonne X, Ligne Y)
+                gameBoard.add(tile, x, y);
+            }
+        }
+    }
+
+    // ========================================================================
+    // 7. GESTION DES ENTITÉS (JOUEUR & ENNEMIS)
+    // ========================================================================
+
+    /**
+     * Initialise l'image du joueur et le place sur la carte.
+     */
+    private void spawnPlayer() {
+        // 1. Récupération dynamique de l'image (on convertit le nom de la classe en minuscules)
+        String fileName = heroClass.toLowerCase() + ".png";
+
+        try {
+            String imagePath = getClass().getResource("/com/example/projet_oop_rogue/assets/characters/" + fileName).toExternalForm();
+            playerSprite = new javafx.scene.image.ImageView(new javafx.scene.image.Image(imagePath));
+
+            // 2. Ajustement de la taille de l'image pour qu'elle rentre dans la case (légèrement plus petite que TILE_SIZE)
+            playerSprite.setFitWidth(40);
+            playerSprite.setFitHeight(40);
+            playerSprite.setPreserveRatio(true);
+
+            // 3. Définition des coordonnées de départ (au centre mathématique de la grille)
+            playerX = GRID_WIDTH / 2;
+            playerY = GRID_HEIGHT / 2;
+
+            // 4. Ajout de l'image dans le GridPane par-dessus le sol
+            gameBoard.add(playerSprite, playerX, playerY);
+
+        } catch (Exception e) {
+            System.err.println("Erreur au chargement du sprite du joueur : " + fileName);
+        }
+    }
+
+    /**
+     * Tente de déplacer le joueur selon des vecteurs de direction (dx, dy).
+     * @param dx Déplacement sur l'axe X (Colonnes : -1 gauche, 1 droite)
+     * @param dy Déplacement sur l'axe Y (Lignes : -1 haut, 1 bas)
+     */
+    private void movePlayer(int dx, int dy) {
+        int newX = playerX + dx;
+        int newY = playerY + dy;
+
+        // 1. Détection de collision : On vérifie que la nouvelle case est bien dans les limites de la matrice
+        if (newX >= 0 && newX < GRID_WIDTH && newY >= 0 && newY < GRID_HEIGHT) {
+
+            // 2. Validation mathématique : mise à jour des coordonnées internes
+            playerX = newX;
+            playerY = newY;
+
+            // 3. Mise à jour visuelle : on déplace l'image existante dans la nouvelle case du GridPane
+            javafx.scene.layout.GridPane.setColumnIndex(playerSprite, playerX);
+            javafx.scene.layout.GridPane.setRowIndex(playerSprite, playerY);
+
+        } else {
+            // Le joueur essaie de sortir de la carte
+            logAction("Le mur du donjon vous bloque le passage !");
+        }
+    }
+
+    /**
+     * Configure l'écouteur d'événements clavier sur la grille de jeu.
+     *
+     * BUG 1 : !!! INCLUT LA GESTION STRICTE DU FOCUS POUR EVITER LE BLOCAGE DES CONTROLES CLAVIERS !!!
+     */
+    private void setupControls() {
+        // 1. Autorise la grille à recevoir le focus
+        gameBoard.setFocusTraversable(true);
+
+        // BUG 1 : !!! 2. On interdit à la console de texte et aux labels de "voler" le focus !!!
+        if (battleLogs != null) {
+            // 1. Bloque la navigation au clavier vers cet élément
+            battleLogs.setFocusTraversable(false);
+
+            // 2. Bloque la capture du focus par clic de souris
+            // On écoute le changement d'état du focus de la zone de texte
+            battleLogs.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                // Si newValue est 'true', la zone vient d'être cliquée
+                if (newValue) {
+                    // On renvoie immédiatement le focus à la grille du jeu !
+                    gameBoard.requestFocus();
+                }
+            });
+        }
+
+        // 3. Définition des actions pour chaque touche pressée
+        gameBoard.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case UP:    movePlayer(0, -1); break;
+                case DOWN:  movePlayer(0, 1); break;
+                case LEFT:  movePlayer(-1, 0); break;
+                case RIGHT: movePlayer(1, 0); break;
+                default: return; // Si c'est une autre touche (ex: Espace), on arrête la méthode ici
+            }
+
+            // BUG 1 : !!! 4. Consommation de l'événement !!!
+            // Cela indique à JavaFX : "J'ai utilisé cette frappe de clavier, ne la transmets pas au reste de l'interface"
+            event.consume();
+        });
+
+        // 5. On force JavaFX à mettre le focus sur la grille une fois la fenêtre chargée
+        javafx.application.Platform.runLater(() -> gameBoard.requestFocus());
+
+        // BUG 1 : !!! 6. Sécurité supplémentaire si le joueur clique ailleurs avec sa souris !!!
+        // Si on clique n'importe où sur la carte, on redonne le focus à la grille
+        gameBoard.setOnMouseClicked(event -> gameBoard.requestFocus());
+    }
+
+
+
+
 }
 
 
