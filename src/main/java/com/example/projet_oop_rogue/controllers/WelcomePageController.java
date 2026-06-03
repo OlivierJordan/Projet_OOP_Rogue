@@ -153,9 +153,13 @@ public class WelcomePageController {
             javafx.stage.Stage stage = (javafx.stage.Stage) playButton.getScene().getWindow();
 
             // 6. Créer une nouvelle scène avec la vue chargée, et l'appliquer à la fenêtre
+            // Le programme crée une nouvelle "Scène" à partir du fichier MainGame.fxml (qui a été chargé dans la variable root juste au-dessus, hors du cadre de l'image).
             javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            // Le programme prend la fenêtre principale de ton application (le stage) et remplace l'ancienne scène (la Welcome Page) par la nouvelle.
             stage.setScene(scene);
+            // Le titre de la fenêtre est mis à jour.
             stage.setTitle("Rogue-like - En jeu");
+            // La fenêtre est rafraîchie pour afficher visuellement le nouveau contenu à l'écran.
             stage.show();
 
         } catch (java.io.IOException e) {
@@ -164,6 +168,9 @@ public class WelcomePageController {
             e.printStackTrace();
             showAlert("Erreur de chargement", "Le fichier du jeu principal est introuvable.");
         }
+
+        // TODO
+
 
         // TODO: Code pour charger "MainGame.fxml" et transmettre playerName et selectedClass au contrôleur principal
     }
