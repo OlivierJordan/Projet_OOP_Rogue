@@ -247,6 +247,8 @@ public class MainGameController {
     /**
      * Configure l'écouteur d'événements clavier sur la grille de jeu.
      */
+    // Ancienne version de la methode setup setupControls() -> BUG 1 !!!
+    /*
     private void setupControls() {
         // Autorise la grille à recevoir le focus (indispensable pour capter le clavier)
         gameBoard.setFocusTraversable(true);
@@ -265,13 +267,13 @@ public class MainGameController {
         // Astuce technique : on force JavaFX à mettre le focus sur la grille une fois la fenêtre chargée
         javafx.application.Platform.runLater(() -> gameBoard.requestFocus());
     }
+    */
 
     /**
      * Configure l'écouteur d'événements clavier sur la grille de jeu.
      *
      * BUG 1 : !!! INCLUT LA GESTION STRICTE DU FOCUS POUR EVITER LE BLOCAGE DES CONTROLES CLAVIERS !!!
      */
-    /*
     private void setupControls() {
         // 1. Autorise la grille à recevoir le focus
         gameBoard.setFocusTraversable(true);
@@ -314,7 +316,7 @@ public class MainGameController {
         // Si on clique n'importe où sur la carte, on redonne le focus à la grille
         gameBoard.setOnMouseClicked(event -> gameBoard.requestFocus());
     }
-    */
+
 
 }
 
