@@ -34,7 +34,7 @@ public class MainGameController {
     private String playerName; // Variable pour stocker nom du joueur (reçu de l'écran d'accueil)
     private String heroClass; // Variable pour stocker la classe choisie : Mage, Chevalier ou Voleur
 
-    // Configuration de la grille d'ffichage pour le MainGame
+    // Configuration de la grille d'affichage pour le MainGame
     private static final int GRID_WIDTH = 15;  // Nombre de colonnes (axe X)
     private static final int GRID_HEIGHT = 10; // Nombre de lignes (axe Y)
     private static final int TILE_SIZE = 50;   // Taille de chaque case en pixels (50x50)
@@ -44,6 +44,10 @@ public class MainGameController {
     private int playerY; // Position actuelle du joueur sur l'axe Y (Lignes)
     private javafx.scene.image.ImageView playerSprite; // L'image physique sur la grille
 
+    // Partie optionnelle pour les obstacles sur la map
+    // Tableau booléen pour la gestion des obstacles
+    private static final int OBSTACLE_COUNT = 25; // Nombre de murs à générer
+    private boolean[][] obstacleGrid; // Matrice logique : true = mur / false = vide
 
     // ========================================================================
     // 3. MÉTHODES D'INITIALISATION ET DE TRANSFERT DE DONNÉES
@@ -70,17 +74,18 @@ public class MainGameController {
 //
 //        System.out.println("Données reçues dans MainGame : " + playerName + " (" + heroClass + ")");
 //
-//        // C'est ici que tu pourras instancier tes vrais objets métiers (ex: new Mage(playerName))
 //    }
 
 
     // Nouvelle fonction initData() :
     // Avec MainGame
 
+
+    // !!! L'ORDRE D'APPEL DES METHODES EST TRES IMPORTANT (RENDU PAR COUCHES) !!!
     /**
      * Initialisation des données du jeu transmises par le WelcomePageController.
      * Exécutée explicitement par le contrôleur précédent juste avant l'affichage de cette scène.
-     * * @param name Nom saisi par le joueur.
+     * @param name Nom saisi par le joueur.
      * @param heroClass Classe sélectionnée (Mage, Chevalier, Voleur).
      */
     public void initData(String name, String heroClass) {
@@ -93,13 +98,17 @@ public class MainGameController {
         // Ajout d'un premier message d'ambiance dans la console de combat
         logAction(this.playerName + " le " + this.heroClass + " entre dans le donjon !");
 
-        // 1. Appelle méthode pour la génération visuelle de la carte (Le sol)
-        generateDungeon();
 
-        // 2. Appelle méthode pour l'apparition du joueur
+        // !!! L'ORDRE D'APPEL DES METHODES EST TRES IMPORTANT (RENDU PAR COUCHES) !!!
+
+        // Couche 0 : Appelle méthode pour la génération visuelle de la carte (le sol)
+        generateDungeon();
+        // Couche 1 : Appelle méthode les murs (obstacles sur la map)
+        generateObstacles();
+        // Couche 2 : Appelle méthode pour l'apparition du joueur (récupération image)
         spawnPlayer();
 
-        // 3. Appelle méthode pour l'activation des contrôles clavier
+        // Appelle méthode pour l'activation des contrôles clavier
         setupControls();
 
 
@@ -227,20 +236,31 @@ public class MainGameController {
         int newX = playerX + dx;
         int newY = playerY + dy;
 
-        // 1. Détection de collision : On vérifie que la nouvelle case est bien dans les limites de la matrice
+        // 1. Détection des limites de la map
         if (newX >= 0 && newX < GRID_WIDTH && newY >= 0 && newY < GRID_HEIGHT) {
 
-            // 2. Validation mathématique : mise à jour des coordonnées internes
-            playerX = newX;
-            playerY = newY;
+            // Partie optionnelle pour les obstacles sur la map
+            // 2. Détection des collisions avec le décor (Complexité O(1))
+            if (!obstacleGrid[newX][newY]) {
 
-            // 3. Mise à jour visuelle : on déplace l'image existante dans la nouvelle case du GridPane
-            javafx.scene.layout.GridPane.setColumnIndex(playerSprite, playerX);
-            javafx.scene.layout.GridPane.setRowIndex(playerSprite, playerY);
+                // Si la case n'est pas un mur (false), on avance !
+                playerX = newX;
+                playerY = newY;
+                javafx.scene.layout.GridPane.setColumnIndex(playerSprite, playerX);
+                javafx.scene.layout.GridPane.setRowIndex(playerSprite, playerY);
 
-        } else {
-            // Le joueur essaie de sortir de la carte
-            logAction("Le mur du donjon vous bloque le passage !");
+            }
+            else {
+                // Le joueur percute un mur intérieur
+                if (battleLogs != null) {
+                    battleLogs.appendText("\n> Un éboulement bloque le passage !");
+                }
+            }
+        }
+        else {
+            if (battleLogs != null) {
+                battleLogs.appendText("\n> Le mur du donjon vous bloque le passage !");
+            }
         }
     }
 
@@ -290,6 +310,48 @@ public class MainGameController {
         // BUG 1 : !!! 6. Sécurité supplémentaire si le joueur clique ailleurs avec sa souris !!!
         // Si on clique n'importe où sur la carte, on redonne le focus à la grille
         gameBoard.setOnMouseClicked(event -> gameBoard.requestFocus());
+    }
+
+    // Partie optionnelle pour les obstacles sur la map
+    /**
+     * Génère des obstacles aléatoires sur la grille et met à jour la matrice logique.
+     */
+    private void generateObstacles() {
+        // Initialisation de la matrice (par défaut, Java remplit tout avec 'false')
+        obstacleGrid = new boolean[GRID_WIDTH][GRID_HEIGHT];
+
+        // Utilisation de random pour faire spawn les obstacles de manière aléatoire sur la map
+        java.util.Random random = new java.util.Random();
+
+        int obstaclesPlaced = 0;
+
+        // On calcule le centre pour protéger la zone d'apparition du joueur
+        int startX = GRID_WIDTH / 2;
+        int startY = GRID_HEIGHT / 2;
+
+        // On boucle tant qu'on n'a pas posé le bon nombre de murs
+        while (obstaclesPlaced < OBSTACLE_COUNT) {
+            int rx = random.nextInt(GRID_WIDTH);
+            int ry = random.nextInt(GRID_HEIGHT);
+
+            // On vérifie que la case est vide ET que ce n'est pas la position de départ
+            if (!obstacleGrid[rx][ry] && !(rx == startX && ry == startY)) {
+
+                // 1. Verrouillage logique : on marque la case comme occupée
+                obstacleGrid[rx][ry] = true;
+                obstaclesPlaced++;
+
+                // 2. Création visuelle : on fabrique la tuile du mur
+                javafx.scene.layout.StackPane wall = new javafx.scene.layout.StackPane();
+                wall.setPrefSize(TILE_SIZE, TILE_SIZE);
+
+                // Style temporaire gris foncé (tu pourras y mettre une ImageView plus tard)
+                wall.setStyle("-fx-background-color: #7f8c8d; -fx-border-color: #2c3e50; -fx-border-width: 1px;");
+
+                // 3. Ajout dans la grille par-dessus le sol
+                gameBoard.add(wall, rx, ry);
+            }
+        }
     }
 
 
