@@ -62,9 +62,11 @@ public class MainGameController {
     private boolean[][] obstacleGrid; // Tableau booléen pour la gestion des obstacles
 */
 
+    // Génération de la map sans zones protégées (3)
+/*
     private static final int RANDOM_OBSTACLES_COUNT = 6; // Définit le nombre de petits obstacles aléatoires à ajouter
     private int[][] obstacleGrid; // Matrice logique 2D mémorisant les collisions : 0 = vide, 1 = mur fixe, 2 = rocher
-    // Matrice représentant le "Level Design" fixe (1 = mur infranchissable, 0 = espace libre)
+    // Matrice représentant le "Level Design" fixe (2 = rocher, 1 = mur infranchissable, 0 = espace libre)
     private final int[][] worldMap = {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, // Ligne 0 : Mur de délimitation supérieur
             {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // Ligne 1 : Arène fermée à gauche (Pong)
@@ -77,14 +79,49 @@ public class MainGameController {
             {1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1}, // Ligne 8 : Couloirs verticaux
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}  // Ligne 9 : Mur de délimitation inférieur
     };
+*/
 
+    // Génération de la map avec zones protégées (3)
+    private static final int RANDOM_OBSTACLES_COUNT = 8; // On peut mettre un peu plus de rochers car la carte est plus grande
+    private int[][] obstacleGrid; // Matrice logique 2D mémorisant les collisions : 0 = vide, 1 = mur fixe, 2 = rocher, 3 = zone protégée
+
+    /**
+     * Carte du monde (Macro-Level Design) :
+     * 0 = Espace libre (Rochers aléatoires autorisés)
+     * 1 = Mur structurel infranchissable (Gris foncé)
+     * 3 = Zone Protégée (Espace libre, mais rochers aléatoires INTERDITS)
+     */
+    // Matrice représentant le "Level Design" fixe (3 = zone protégée, 2 = rocher, 1 = mur infranchissable, 0 = espace libre)
+    /**
+     * Carte du monde (Macro-Level Design) :
+     * 0 = Espace libre (Rochers aléatoires autorisés)
+     * 1 = Mur structurel infranchissable (Gris foncé)
+     * 3 = Chemin protégé (Espace libre, rochers aléatoires INTERDITS)
+     * 4 = Ennemi (Point d'interaction de combat)
+     * 5 = Mini-Jeu (Point d'interaction Pong)
+     */
+    private final int[][] worldMap = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 5, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0}, // Ligne 1 : Pong à gauche, Ennemi 1 à droite
+            {0, 3, 3, 3, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 3, 3, 0},
+            {0, 0, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+            {0, 1, 1, 1, 1, 1, 0, 0, 1, 4, 3, 3, 1, 0, 0, 1, 1, 1, 1, 0}, // Ligne 4 : Ennemi 2 dans la structure centrale
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // Ligne 5 : Spawn Joueur au centre
+            {0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0},
+            {0, 0, 1, 4, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 4, 3, 1, 0}, // Ligne 7 : Ennemi 3 (gauche) et Ennemi 4 (droite)
+            {0, 0, 1, 3, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 3, 1, 0},
+            {0, 0, 3, 3, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 3, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // Ligne 10 : Ennemi 5 (bas centre)
+            {0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    };
 
     // Classe pour la génération par blocs d'obstacles sur la map
 
     /*
      * Classe utilitaire interne pour définir la géométrie d'une salle.
      */
-    /*
+/*
     private static class Room {
         int x, y, width, height;
 
@@ -100,7 +137,7 @@ public class MainGameController {
                     y - 1 <= other.y + other.height && y + height + 1 >= other.y);
         }
     }
-    */
+*/
 
 
     // ========================================================================
@@ -218,6 +255,63 @@ public class MainGameController {
         }
     }
 
+    /**
+     * Ouvre l'interface de combat sous forme de fenêtre modale superposée.
+     * Interrompt l'exécution de la carte principale jusqu'à la résolution du combat.
+     * En cas de victoire (fermeture de la fenêtre), l'entité ennemie est retirée de la matrice.
+     *
+     * @param enemyX La coordonnée X de l'ennemi sur la grille logique.
+     * @param enemyY La coordonnée Y de l'ennemi sur la grille logique.
+     */
+    private void startBattle(int enemyX, int enemyY) {
+        try {
+            // 1. Chargement de la vue du combat (Il faudra créer ce fichier FXML dans le dossier approprié)
+            // Assure-toi que le chemin correspond bien à l'arborescence de ton projet
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/com/example/projet_oop_rogue/fxml/games/Battle.fxml"));
+            javafx.scene.Parent root = loader.load();
+
+            // 2. Création de la nouvelle fenêtre (Stage)
+            javafx.stage.Stage battleStage = new javafx.stage.Stage();
+            battleStage.setTitle("⚔️ Phase de Combat !");
+            battleStage.setScene(new javafx.scene.Scene(root));
+
+            // 3. Verrouillage Modale : Empêche de cliquer sur la carte tant que le combat est ouvert
+            battleStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+
+            // NOUVEAU : On interdit au joueur de réduire ou redimensionner la fenêtre de combat
+            battleStage.setResizable(false);
+
+            // 4. Affichage bloquant (Le code s'arrête ici et attend que la fenêtre battleStage soit fermée)
+            battleStage.showAndWait();
+
+            // ====================================================================
+            // 5. RETOUR SUR LA CARTE : Ce code s'exécute uniquement APRÈS le combat
+            // ====================================================================
+
+            // On supprime l'ennemi de la matrice logique (la case redevient traversable)
+            obstacleGrid[enemyX][enemyY] = 0;
+
+            // Astuce visuelle : On place un carré de la couleur du sol pour "masquer" la silhouette morte
+            // (Idéalement, il faudrait retirer l'image, mais c'est une rustine très efficace)
+            javafx.scene.layout.StackPane emptyFloor = new javafx.scene.layout.StackPane();
+            emptyFloor.setPrefSize(TILE_SIZE, TILE_SIZE);
+            emptyFloor.setStyle("-fx-background-color: transparent;"); // On laisse voir le fond
+            gameBoard.add(emptyFloor, enemyX, enemyY);
+
+            if (battleLogs != null) {
+                battleLogs.appendText("\n> Victoire ! L'ennemi s'est volatilisé. Le chemin est libre.");
+            }
+
+        } catch (Exception e) {
+            // Gestion de l'exception si le fichier Battle.fxml n'existe pas encore
+            System.err.println("Erreur critique : Fichier Battle.fxml introuvable.");
+            e.printStackTrace();
+            if (battleLogs != null) {
+                battleLogs.appendText("\n> [Erreur Système] Impossible de charger l'arène de combat.");
+            }
+        }
+    }
+
 
     // ========================================================================
     // 6. GÉNÉRATION DE LA CARTE (MOTEUR 2D)
@@ -275,6 +369,38 @@ public class MainGameController {
         // 3. Ajout dans le moteur de rendu
         gameBoard.add(wall, x, y);
     }
+
+    /**
+     * Instancie une entité interactive (Ennemi, Mini-jeu) sur la carte.
+     * Charge une image PNG, ou applique un carré de couleur en cas d'absence du fichier.
+     *
+     * @param x Colonne de placement
+     * @param y Ligne de placement
+     * @param imageName Le nom du fichier image (ex: "silhouette.png")
+     * @param type L'identifiant logique (4 pour ennemi, 5 pour Pong)
+     * @param fallbackColor Couleur de secours si l'image manque
+     */
+    private void placeEntity(int x, int y, String imageName, int type, String fallbackColor) {
+        obstacleGrid[x][y] = type; // Verrouillage logique de la case
+
+        try {
+            // Tente de charger l'image depuis le dossier characters
+            String path = getClass().getResource("/com/example/projet_oop_rogue/assets/characters/" + imageName).toExternalForm();
+            javafx.scene.image.ImageView sprite = new javafx.scene.image.ImageView(new javafx.scene.image.Image(path));
+
+            // Redimensionnement pour s'intégrer parfaitement dans une case (TILE_SIZE = 38)
+            sprite.setFitWidth(30);
+            sprite.setFitHeight(30);
+            sprite.setPreserveRatio(true);
+
+            gameBoard.add(sprite, x, y);
+
+        } catch (Exception e) {
+            // Sécurité (Fallback) : Si l'image n'est pas trouvée, on dessine un bloc de couleur
+            placeObstacle(x, y, fallbackColor, type);
+        }
+    }
+
 
     // Partie optionnelle pour la génération purement aléatoire d'obstacles sur la map
     /*
@@ -430,9 +556,17 @@ public class MainGameController {
         // Attention !!! : y correspond aux Lignes (1er crochet), x correspond aux Colonnes (2ème crochet)
         for (int y = 0; y < GRID_HEIGHT; y++) { // Boucle parcourant les ordonnées (lignes) de haut en bas
             for (int x = 0; x < GRID_WIDTH; x++) { // Boucle parcourant les abscisses (colonnes) de gauche à droite
-                if (worldMap[y][x] == 1) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence d'un mur
+                int cellData = worldMap[y][x];
+                if (cellData == 1) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence d'un mur
                     placeObstacle(x, y, "#1a252f", 1); // Fait appel à la sous-méthode pour créer un obstacle (mur) : Couleur gris/bleu très sombre et type 1
                 }
+                else if (cellData == 4) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence d'un ennemi
+                    placeEntity(x, y, "silhouette.png", 4, "#c0392b"); // Place un ennemi (cherche l'image silhouette.png, sinon carré rouge)
+                }
+                else if (cellData == 5) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence du mini jeu
+                    placeEntity(x, y, "statsgame.png", 5, "#f1c40f"); // Place le déclencheur Pong (cherche l'image pong.png, sinon carré jaune)
+                }
+                // Si worldMap[y][x] == 3, on ne dessine rien (c'est de l'herbe), mais on mémorise la protection plus tard
             }
         }
 
@@ -440,17 +574,18 @@ public class MainGameController {
         java.util.Random random = new java.util.Random(); // Instancie le générateur de nombres pseudo-aléatoires de Java
         int randomsPlaced = 0; // Initialise le compteur d'obstacles placés avec succès
 
-        int startX = 7; // Enregistre la coordonnée X fixe où le joueur apparaîtra
+        int startX = 10; // Enregistre la coordonnée X fixe où le joueur apparaîtra
         int startY = 5; // Enregistre la coordonnée Y fixe où le joueur apparaîtra
 
         while (randomsPlaced < RANDOM_OBSTACLES_COUNT) { // Continue la boucle tant que le quota d'obstacles défini n'est pas atteint
             int rx = random.nextInt(GRID_WIDTH); // Génère une coordonnée X aléatoire comprise dans les limites de la grille
             int ry = random.nextInt(GRID_HEIGHT); // Génère une coordonnée Y aléatoire comprise dans les limites de la grille
 
-            // Évaluation de validité : la case doit être vide (0) ET ne doit pas être la case d'apparition
-            // On place un petit obstacle SEULEMENT si la case est vide (0)
-            // ET que ce n'est pas la case du joueur.
-            if (obstacleGrid[rx][ry] == 0 && !(rx == startX && ry == startY)) {
+            // Évaluation de validité :
+            // On ne pose un rocher QUE si la matrice physique est vide (0)
+            // ET que le plan du monde indique que ce n'est pas une zone protégée (worldMap != 3)
+            // ET que ce n'est pas le point d'apparition du joueur.
+            if (obstacleGrid[rx][ry] == 0 && worldMap[ry][rx] != 3 && !(rx == startX && ry == startY)) {
                 // On place un petit rocher (couleur légèrement différente pour les différencier)
                 placeObstacle(rx, ry, "#7f8c8d", 2); // Fait appel à la sous-méthode pour créer un rocher aléatoire : Couleur gris clair et type 2
                 randomsPlaced++; // Incrémente le compteur pour valider la pose de cet obstacle
@@ -468,7 +603,7 @@ public class MainGameController {
      */
     private void spawnPlayer() {
         // 1. Récupération dynamique de l'image (on convertit le nom de la classe en minuscules)
-        String fileName = heroClass.toLowerCase() + ".png";
+        String fileName = heroClass.toLowerCase() + "_map.png";
 
         try {
             String imagePath = getClass().getResource("/com/example/projet_oop_rogue/assets/characters/" + fileName).toExternalForm();
@@ -488,7 +623,7 @@ public class MainGameController {
             playerY = GRID_HEIGHT / 2;
 */
             // 3. Définition des coordonnées de départ
-            playerX = 7; // Assigne mathématiquement la colonne de départ au joueur
+            playerX = 10; // Assigne mathématiquement la colonne de départ au joueur
             playerY = 5; // Assigne mathématiquement la ligne de départ au joueur
 
             // 4. Ajout de l'image dans le GridPane par-dessus le sol
@@ -547,16 +682,36 @@ public class MainGameController {
                 javafx.scene.layout.GridPane.setColumnIndex(playerSprite, playerX);
                 javafx.scene.layout.GridPane.setRowIndex(playerSprite, playerY);
 
-            } else if (targetCell == 1) {
+            }
+            else if (targetCell == 1) {
                 // Collision avec un mur fixe (obstacle type 1)
                 if (battleLogs != null) {
                     battleLogs.appendText("\n> Un mur d'enceinte infranchissable vous bloque !");
                 }
-            } else if (targetCell == 2) {
+            }
+            else if (targetCell == 2) {
                 // Collision avec un rocher aléatoire (obstacle type 2)
                 if (battleLogs != null) {
                     battleLogs.appendText("\n> Un éboulement de rochers vous bloque le passage !");
                 }
+            }
+            else if (targetCell == 4) {
+                // NOUVEAU : Interaction avec un Ennemi
+                if (battleLogs != null) {
+                    battleLogs.appendText("\n> [!] Un ennemi se dresse devant vous ! (Combat imminent)");
+                }
+                // TODO : Lancer la scène de combat ici
+                // Appel de la méthode de combat en transmettant les coordonnées de la cible
+                startBattle(newX, newY);
+
+            }
+            else if (targetCell == 5) {
+                // NOUVEAU : Interaction avec le Mini-jeu
+                if (battleLogs != null) {
+                    battleLogs.appendText("\n> Vous avez trouvé la borne d'arcade mystère !");
+                }
+                // TODO : Lancer la scène du mini-jeu Pong ici
+
             }
         }
         else {

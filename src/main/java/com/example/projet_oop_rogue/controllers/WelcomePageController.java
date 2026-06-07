@@ -76,7 +76,7 @@ public class WelcomePageController {
         selectedClass = "Mage"; // Mémorisation du choix
         // Mise à jour de l'affichage avec les statistiques du Mage
         statsDisplay.setText("Classe : MAGE\n\nPoints de vie (HP) : 80\nDégâts : 25\nSpécialité : Attaque magique à distance.");
-        updateCharacterImage("mage.png"); // Chargement de l'image correspondante
+        updateCharacterImage("mage_map.png"); // Chargement de l'image correspondante
     }
 
     /**
@@ -87,7 +87,7 @@ public class WelcomePageController {
         selectedClass = "Chevalier"; // Mémorisation du choix
         // Mise à jour de l'affichage avec les statistiques du Chevalier
         statsDisplay.setText("Classe : CHEVALIER\n\nPoints de vie (HP) : 150\nDégâts : 15\nSpécialité : Haute défense et armure lourde.");
-        updateCharacterImage("chevalier.png"); // Chargement de l'image correspondante
+        updateCharacterImage("chevalier_map.png"); // Chargement de l'image correspondante
     }
 
     /**
@@ -98,7 +98,7 @@ public class WelcomePageController {
         selectedClass = "Voleur"; // Mémorisation du choix
         // Mise à jour de l'affichage avec les statistiques du Voleur
         statsDisplay.setText("Classe : VOLEUR\n\nPoints de vie (HP) : 100\nDégâts : 20\nSpécialité : Esquive rapide et coups critiques.");
-        updateCharacterImage("voleur.png"); // Chargement de l'image correspondante
+        updateCharacterImage("voleur_map.png"); // Chargement de l'image correspondante
     }
 
     // ========================================================================
