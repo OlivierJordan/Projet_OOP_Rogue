@@ -44,15 +44,46 @@ public class MainGameController {
     private int playerY; // Position actuelle du joueur sur l'axe Y (Lignes)
     private javafx.scene.image.ImageView playerSprite; // L'image physique sur la grille
 
-    // Partie optionnelle pour les obstacles sur la map
+
+    // Partie optionnelle pour la génération aléatoire pur d'obstacles sur la map
     // Tableau booléen pour la gestion des obstacles
     private static final int OBSTACLE_COUNT = 25; // Nombre de murs à générer
     private boolean[][] obstacleGrid; // Matrice logique : true = mur / false = vide
 
+    /*
+    // Partie pour la Génération par Blocs d'obstacles sur la map
+    private static final int MAX_ROOMS = 4; // Static pour le nbr max de salles
+    private static final int MIN_ROOM_SIZE = 3; // Static pour la taille min des salles
+    private static final int MAX_ROOM_SIZE = 5; // Static pour la taille max des salles
+    private boolean[][] obstacleGrid; // Tableau booléen pour la gestion des obstacles
+    */
+
+
+    // Classe pour la Génération par Blocs d'obstacles sur la map
+    /**
+     * Classe utilitaire interne pour définir la géométrie d'une salle.
+     */
+    /*
+    private static class Room {
+        int x, y, width, height;
+
+        public Room(int x, int y, int width, int height) {
+            this.x = x; this.y = y; this.width = width; this.height = height;
+        }
+
+        public int getCenterX() { return x + width / 2; }
+        public int getCenterY() { return y + height / 2; }
+
+        public boolean intersects(Room other) {
+            return (x - 1 <= other.x + other.width && x + width + 1 >= other.x &&
+                    y - 1 <= other.y + other.height && y + height + 1 >= other.y);
+        }
+    }
+    */
+
     // ========================================================================
     // 3. MÉTHODES D'INITIALISATION ET DE TRANSFERT DE DONNÉES
     // ========================================================================
-
 
     // Ancienne fonction initData() :
     // sans le MainGame et juste avec les entrées utilisateurs de la WelcomePage
@@ -214,6 +245,9 @@ public class MainGameController {
             playerSprite.setFitHeight(40);
             playerSprite.setPreserveRatio(true);
 
+            // PLUS BESOIN DE DETERMINER DES COORDONNEES FIXES POUR LE JOUEUR !!! : car maintenant c'est notre
+            // algorithme pour la Génération par Blocs d'obstacles sur la map qui détermine l'endroit sécurisé
+            // où placer le héros (au centre de la première salle générée).
             // 3. Définition des coordonnées de départ (au centre mathématique de la grille)
             playerX = GRID_WIDTH / 2;
             playerY = GRID_HEIGHT / 2;
@@ -238,7 +272,7 @@ public class MainGameController {
         // 1. Détection des limites de la map
         if (newX >= 0 && newX < GRID_WIDTH && newY >= 0 && newY < GRID_HEIGHT) {
 
-            // Partie optionnelle pour les obstacles sur la map
+            // Partie optionnelle pour la génération aléatoire pur d'obstacles sur la map
             // 2. Détection des collisions avec le décor (Complexité O(1))
             if (!obstacleGrid[newX][newY]) {
 
@@ -311,7 +345,8 @@ public class MainGameController {
         gameBoard.setOnMouseClicked(event -> gameBoard.requestFocus());
     }
 
-    // Partie optionnelle pour les obstacles sur la map
+
+    // Partie optionnelle pour la génération aléatoire pur d'obstacles sur la map
     /**
      * Génère des obstacles aléatoires sur la grille et met à jour la matrice logique.
      */
@@ -353,6 +388,103 @@ public class MainGameController {
         }
     }
 
+
+    // Partie pour la Génération par Blocs d'obstacles sur la map
+    /**
+     * Génère un donjon structuré en créant des pièces et des couloirs.
+     */
+    /*
+    private void generateObstacles() {
+        obstacleGrid = new boolean[GRID_WIDTH][GRID_HEIGHT];
+
+        // 1. État initial : La grille entière est un mur massif (true)
+        for (int x = 0; x < GRID_WIDTH; x++) {
+            for (int y = 0; y < GRID_HEIGHT; y++) {
+                obstacleGrid[x][y] = true;
+            }
+        }
+
+        java.util.List<Room> rooms = new java.util.ArrayList<>();
+        java.util.Random random = new java.util.Random();
+
+        // 2. Tentatives de placement de pièces
+        for (int i = 0; i < 20; i++) { // On essaie 20 fois au maximum
+            if (rooms.size() >= MAX_ROOMS) break; // On s'arrête si on a assez de pièces
+
+            // Dimensions et positions aléatoires
+            int w = random.nextInt(MAX_ROOM_SIZE - MIN_ROOM_SIZE + 1) + MIN_ROOM_SIZE;
+            int h = random.nextInt(MAX_ROOM_SIZE - MIN_ROOM_SIZE + 1) + MIN_ROOM_SIZE;
+            int x = random.nextInt(GRID_WIDTH - w - 1) + 1;
+            int y = random.nextInt(GRID_HEIGHT - h - 1) + 1;
+
+            Room newRoom = new Room(x, y, w, h);
+
+            // Vérification de collision avec les pièces existantes
+            boolean failed = false;
+            for (Room other : rooms) {
+                if (newRoom.intersects(other)) {
+                    failed = true;
+                    break;
+                }
+            }
+
+            // Si la place est libre, on creuse la pièce
+            if (!failed) {
+                // Creuser le vide (false) pour la pièce
+                for (int rx = x; rx < x + w; rx++) {
+                    for (int ry = y; ry < y + h; ry++) {
+                        obstacleGrid[rx][ry] = false;
+                    }
+                }
+
+                // Relier la pièce ou placer le joueur
+                if (rooms.isEmpty()) {
+                    // C'est la toute première salle : c'est ici que le joueur doit apparaître !
+                    playerX = newRoom.getCenterX();
+                    playerY = newRoom.getCenterY();
+                } else {
+                    // Ce n'est pas la première salle : on creuse un couloir depuis la salle précédente
+                    Room prev = rooms.get(rooms.size() - 1);
+                    carveCorridor(prev.getCenterX(), prev.getCenterY(), newRoom.getCenterX(), newRoom.getCenterY());
+                }
+                rooms.add(newRoom);
+            }
+        }
+
+        // 3. Affichage graphique : on ne dessine que les cases restées à 'true' (les murs)
+        for (int x = 0; x < GRID_WIDTH; x++) {
+            for (int y = 0; y < GRID_HEIGHT; y++) {
+                if (obstacleGrid[x][y]) {
+                    javafx.scene.layout.StackPane wall = new javafx.scene.layout.StackPane();
+                    wall.setPrefSize(TILE_SIZE, TILE_SIZE);
+                    wall.setStyle("-fx-background-color: #7f8c8d; -fx-border-color: #2c3e50; -fx-border-width: 1px;");
+                    gameBoard.add(wall, x, y);
+                }
+            }
+        }
+    }
+    */
+
+    /**
+     * Creuse un couloir en forme de L entre deux points donnés.
+     */
+    /*
+    private void carveCorridor(int x1, int y1, int x2, int y2) {
+        // Couloir horizontal
+        int minX = Math.min(x1, x2);
+        int maxX = Math.max(x1, x2);
+        for (int x = minX; x <= maxX; x++) {
+            obstacleGrid[x][y1] = false;
+        }
+
+        // Couloir vertical
+        int minY = Math.min(y1, y2);
+        int maxY = Math.max(y1, y2);
+        for (int y = minY; y <= maxY; y++) {
+            obstacleGrid[x2][y] = false;
+        }
+    }
+    */
 
 
 
