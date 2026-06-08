@@ -121,7 +121,7 @@ public class MainGameController {
             {0, 0, 3, 3, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 3, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // Ligne 10 : Ennemi 5 (bas centre)
             {0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            {0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
     // Classe pour la génération par blocs d'obstacles sur la map
@@ -320,6 +320,34 @@ public class MainGameController {
         }
     }
 
+    /**
+     * Ouvre l'interface de la boutique sous forme de fenêtre modale.
+     */
+    private void openShop() {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/com/example/projet_oop_rogue/fxml/ShopPage.fxml")); // Vérifie bien ce chemin !
+            javafx.scene.Parent root = loader.load();
+
+            javafx.stage.Stage shopStage = new javafx.stage.Stage();
+            shopStage.setTitle("💰 Boutique");
+            shopStage.setScene(new javafx.scene.Scene(root));
+
+            // Verrouillage Modal pour mettre la carte en pause
+            shopStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            shopStage.setResizable(false);
+
+            shopStage.showAndWait(); // Le jeu s'arrête ici jusqu'à ce que le joueur quitte la boutique
+
+            if (battleLogs != null) {
+                battleLogs.appendText("\n> Vous quittez la boutique.");
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erreur critique : Fichier Shop.fxml introuvable.");
+            e.printStackTrace();
+        }
+    }
+
 
     // ========================================================================
     // 6. GÉNÉRATION DE LA CARTE (MOTEUR 2D)
@@ -384,22 +412,26 @@ public class MainGameController {
      *
      * @param x Colonne de placement
      * @param y Ligne de placement
-     * @param imageName Le nom du fichier image (ex: "silhouette.png")
+     * @param imageSubPath Le nom du fichier image (ex: "silhouette.png")
      * @param type L'identifiant logique (4 pour ennemi, 5 pour Pong)
      * @param fallbackColor Couleur de secours si l'image manque
      */
-    private void placeEntity(int x, int y, String imageName, int type, String fallbackColor) {
+    private void placeEntity(int x, int y, String imageSubPath, int type, String fallbackColor) {
         obstacleGrid[x][y] = type; // Verrouillage logique de la case
 
         try {
-            // Tente de charger l'image depuis le dossier characters
-            String path = getClass().getResource("/com/example/projet_oop_rogue/assets/characters/" + imageName).toExternalForm();
+            // NOUVEAU : Le chemin de base s'arrête à "assets/". Le reste est fourni par imageSubPath.
+            String path = getClass().getResource("/com/example/projet_oop_rogue/assets/" + imageSubPath).toExternalForm();
             javafx.scene.image.ImageView sprite = new javafx.scene.image.ImageView(new javafx.scene.image.Image(path));
 
             // Redimensionnement pour s'intégrer parfaitement dans une case (TILE_SIZE = 38)
             sprite.setFitWidth(30);
             sprite.setFitHeight(30);
             sprite.setPreserveRatio(true);
+
+            // BUG 7 !!! : Centrage absolu dans la cellule !!!
+            javafx.scene.layout.GridPane.setHalignment(sprite, javafx.geometry.HPos.CENTER);
+            javafx.scene.layout.GridPane.setValignment(sprite, javafx.geometry.VPos.CENTER);
 
             gameBoard.add(sprite, x, y);
 
@@ -569,15 +601,15 @@ public class MainGameController {
                     placeObstacle(x, y, "#1a252f", 1); // Fait appel à la sous-méthode pour créer un obstacle (mur) : Couleur gris/bleu très sombre et type 1
                 }
                 else if (cellData == 4) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence d'un ennemi
-                    placeEntity(x, y, "silhouette.png", 4, "#c0392b"); // Place un ennemi (cherche l'image silhouette.png, sinon carré rouge)
+                    // Place un ennemi (cherche l'image silhouette.png, sinon carré rouge)
+                    placeEntity(x, y, "characters/map/silhouette.png", 4, "#c0392b"); // On précise qu'il faut aller dans characters/map/
                 }
                 else if (cellData == 5) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence du mini jeu
-                    placeEntity(x, y, "statsgame.png", 5, "#f1c40f"); // Place le déclencheur Pong (cherche l'image pong.png, sinon carré jaune)
+                    // Place le déclencheur Pong (cherche l'image workbench.png, sinon carré jaune)
+                    placeEntity(x, y, "environment/map/workbench.png", 5, "#f1c40f"); // On précise qu'il faut aller dans environment/map/
                 }
                 else if (cellData == 6) {
                     // Place le magasin (cherche shop.png, sinon carré marron)
-                    // N'oublie pas de modifier le chemin dans ta méthode placeEntity
-                    // ou d'en créer une spécifique pour l'environnement si les chemins sont codés en dur !
                     placeEntity(x, y, "environment/map/shop.png", 6, "#8e44ad");
                 }
                 // Si worldMap[y][x] == 3, on ne dessine rien (c'est de l'herbe), mais on mémorise la protection plus tard
@@ -624,9 +656,16 @@ public class MainGameController {
             playerSprite = new javafx.scene.image.ImageView(new javafx.scene.image.Image(imagePath));
 
             // 2. Ajustement de la taille de l'image pour qu'elle rentre dans la case (légèrement plus petite que TILE_SIZE)
-            playerSprite.setFitWidth(40);
-            playerSprite.setFitHeight(40);
+
+            // BUG 6 !!! : REDIMENSIONNEMENT STRICT DE LA TAILLE DU PERSONNAGE !!!
+            // On limite la taille à 30 ou 34 pixels pour laisser une petite marge dans la case de 38px !!!
+            playerSprite.setFitWidth(34);
+            playerSprite.setFitHeight(34);
             playerSprite.setPreserveRatio(true);
+
+            // BUG 7 !!! : Centrage absolu dans la cellule !!!
+            javafx.scene.layout.GridPane.setHalignment(playerSprite, javafx.geometry.HPos.CENTER);
+            javafx.scene.layout.GridPane.setValignment(playerSprite, javafx.geometry.VPos.CENTER);
 
             // PLUS BESOIN DE DETERMINER DES COORDONNEES FIXES POUR LE JOUEUR !!! : car maintenant c'est notre
             // algorithme pour la Génération par Blocs d'obstacles sur la map qui détermine l'endroit sécurisé
@@ -730,10 +769,10 @@ public class MainGameController {
             else if (targetCell == 6) {
                 // Interaction avec le Magasin
                 if (battleLogs != null) {
-                    battleLogs.appendText("\n> 🪙 Bienvenue dans la boutique ! (Ouverture de l'inventaire...)");
+                    battleLogs.appendText("\n> 🪙 Bienvenue dans la boutique !");
                 }
                 // TODO : Lancer la scène du magasin ici
-
+                openShop(); // Appel de la fenêtre du shop !
             }
         }
         else {

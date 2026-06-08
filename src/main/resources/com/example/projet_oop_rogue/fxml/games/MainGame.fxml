@@ -40,7 +40,7 @@
     </left>
 
     <center>
-        <GridPane fx:id="gameBoard" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #34495e;" BorderPane.alignment="CENTER">
+        <GridPane fx:id="gameBoard" alignment="CENTER" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" BorderPane.alignment="CENTER">
         </GridPane>
     </center>
 
