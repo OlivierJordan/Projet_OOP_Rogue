@@ -35,10 +35,17 @@ public class MainGameController {
     private String playerName; // Variable pour stocker nom du joueur (reçu de l'écran d'accueil)
     private String heroClass; // Variable pour stocker la classe choisie : Mage, Chevalier ou Voleur
 
-    // Configuration de la grille d'affichage pour le MainGame
+    // Configuration de la grille d'affichage V.1.0 pour le MainGame
+/*
     private static final int GRID_WIDTH = 15;  // Nbr total de colonnes (axe X)
     private static final int GRID_HEIGHT = 10; // Nbr total de lignes (axe Y)
     private static final int TILE_SIZE = 50;   // Taille de chaque case en pixels (50x50)
+*/
+
+    // Configuration de la grille d'affichage V.2.0 pour le MainGame
+    private static final int GRID_WIDTH = 20;  // <-- Doit être à 20 (et non plus 15)
+    private static final int GRID_HEIGHT = 13; // <-- Doit être à 13 (et non plus 10)
+    private static final int TILE_SIZE = 38;   // <-- Doit être à 38 (et non plus 50)
 
     // Entités sur la carte
     private int playerX; // Position actuelle du joueur sur l'axe X (Colonnes)
@@ -99,6 +106,7 @@ public class MainGameController {
      * 3 = Chemin protégé (Espace libre, rochers aléatoires INTERDITS)
      * 4 = Ennemi (Point d'interaction de combat)
      * 5 = Mini-Jeu (Point d'interaction Pong)
+     * 6 = Magasin (Point d'interaction Boutique) <-- NOUVEAU
      */
     private final int[][] worldMap = {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -566,6 +574,12 @@ public class MainGameController {
                 else if (cellData == 5) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence du mini jeu
                     placeEntity(x, y, "statsgame.png", 5, "#f1c40f"); // Place le déclencheur Pong (cherche l'image pong.png, sinon carré jaune)
                 }
+                else if (cellData == 6) {
+                    // Place le magasin (cherche shop.png, sinon carré marron)
+                    // N'oublie pas de modifier le chemin dans ta méthode placeEntity
+                    // ou d'en créer une spécifique pour l'environnement si les chemins sont codés en dur !
+                    placeEntity(x, y, "environment/map/shop.png", 6, "#8e44ad");
+                }
                 // Si worldMap[y][x] == 3, on ne dessine rien (c'est de l'herbe), mais on mémorise la protection plus tard
             }
         }
@@ -711,6 +725,14 @@ public class MainGameController {
                     battleLogs.appendText("\n> Vous avez trouvé la borne d'arcade mystère !");
                 }
                 // TODO : Lancer la scène du mini-jeu Pong ici
+
+            }
+            else if (targetCell == 6) {
+                // Interaction avec le Magasin
+                if (battleLogs != null) {
+                    battleLogs.appendText("\n> 🪙 Bienvenue dans la boutique ! (Ouverture de l'inventaire...)");
+                }
+                // TODO : Lancer la scène du magasin ici
 
             }
         }
