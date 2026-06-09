@@ -383,7 +383,7 @@ public class MainGameController extends com.example.projet_oop_rogue.controllers
 
     private void openPong() {
         try { // Ouvre un bloc sécurisé pour capturer les erreurs de chargement de fichier
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/com/example/projet_oop_rogue/fxml/games/Pong.fxml")); // Prépare le chargement du fichier visuel du mini-jeu
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/com/example/projet_oop_rogue/fxml/games/PongGame.fxml")); // Prépare le chargement du fichier visuel du mini-jeu
             javafx.scene.Parent root = loader.load(); // Lit le fichier XML et le transforme en objets Java en mémoire
 
             PongGameController pongController = loader.getController(); // Récupère le contrôleur du Pong qui vient d'être créé par JavaFX
