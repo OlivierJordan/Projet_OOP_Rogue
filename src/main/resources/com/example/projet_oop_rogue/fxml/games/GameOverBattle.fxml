@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_oop_rogue.controllers.GameOverBattleController">
+   <children>
+      <ImageView fitHeight="435.0" fitWidth="600.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../assets/ui/battle/background_battle.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="82.0" fitWidth="197.0" layoutX="217.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../assets/ui/btn.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btn_restart" alignment="CENTER" contentDisplay="CENTER" layoutX="213.0" layoutY="266.0" mnemonicParsing="false" onAction="#on_btn_restart" prefHeight="82.0" prefWidth="176.0" scaleShape="false" style="-fx-background-color: transparent;" text="Restart">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font size="18.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.8480176463526251" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="1.0" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.3761403560638428" green="0.021052632480859756" blue="0.9473684430122375" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill></Button>
+      <Label layoutX="177.0" layoutY="68.0" text="Tu as Perdu">
+         <textFill>
+            <RadialGradient centerX="0.7191629955947135" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.6631578803062439" green="0.11543859541416168" blue="0.11543859541416168" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+         <font>
+            <Font size="48.0" />
+         </font></Label>
+      <Label layoutX="175.0" layoutY="248.0" text="Click ici pour Restart une nouvelle run ">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="1.0" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.8899999856948853" green="0.6144989728927612" blue="0.05339999869465828" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color green="1.0" blue="0.4833333194255829" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill></Label>
+      <Label fx:id="lbl_floor" layoutX="56.0" layoutY="160.0" prefHeight="70.0" prefWidth="475.0" text="Label" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="1.0" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.8899999856948853" green="0.6144989728927612" blue="0.05339999869465828" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color green="1.0" blue="0.4833333194255829" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Label>
+   </children>
+</AnchorPane>
