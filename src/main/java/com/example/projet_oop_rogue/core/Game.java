@@ -1,7 +1,8 @@
 package com.example.projet_oop_rogue.core;
 
+
+import com.example.projet_oop_rogue.characters.enemies.monstre;
 import com.example.projet_oop_rogue.characters.heroes.hero;
-import com.example.projet_oop_rogue.characters.monster.monstre;
 
 /**
  * Classe mère abstraite représentant la structure globale d'un jeu ou d'une interface jouable.

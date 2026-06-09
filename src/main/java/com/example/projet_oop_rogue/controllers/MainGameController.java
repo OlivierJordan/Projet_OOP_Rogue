@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 
-public class MainGameController extends com.example.projet_oop_rogue.controllers.Game {
+public class MainGameController extends com.example.projet_oop_rogue.core.Game {
 
     // ========================================================================
     // 1. DÉCLARATION DES VARIABLES FXML (INTERFACE GRAPHIQUE)

@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
 
 import java.util.Random;
 
-public class PongGameController extends com.example.projet_oop_rogue.controllers.Game {
+public class PongGameController extends com.example.projet_oop_rogue.core.Game {
 
     // =========================================================
     // NOUVEAU : Le lien de communication avec ta carte principale

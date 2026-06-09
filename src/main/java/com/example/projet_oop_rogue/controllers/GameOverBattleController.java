@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Controler du losing screen qui indique que le joueur est mort
  */
-public class GameOverBattleController extends com.example.projet_oop_rogue.controllers.Game {
+public class GameOverBattleController extends com.example.projet_oop_rogue.core.Game {
     @FXML
     private Label lbl_floor;
 

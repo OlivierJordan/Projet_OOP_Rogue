@@ -16,7 +16,7 @@ import java.util.Random; // Pour le choix aléatoire des monstres
 import com.example.projet_oop_rogue.characters.heroes.mage;
 import com.example.projet_oop_rogue.characters.heroes.chevalier;
 import com.example.projet_oop_rogue.characters.heroes.voleur;
-import com.example.projet_oop_rogue.characters.monster.monstre;
+import com.example.projet_oop_rogue.characters.enemies.monstre;
 
 public class BattleGameController extends Game { // Début de la classe qui hérite proprement de Game
 
@@ -183,7 +183,7 @@ public class BattleGameController extends com.example.projet_oop_rogue.controlle
 
         // NOUVEAU : Synchronisation différée via Platform.runLater
         // On attend que JavaFX ait fini de charger la fenêtre avant de demander le mainController
-        javafx.application.Platform.runLater(() -> {
+        Platform.runLater(() -> {
             if (mainController != null) {
                 // On remplace les PV du module de combat par tes VRAIS PV
                 main_character.vie_actuel = mainController.getPlayerHP();
@@ -349,7 +349,7 @@ public class BattleGameController extends com.example.projet_oop_rogue.controlle
      *      *                                 si oui : finit le tour, et envoie sur le lousing screen.
      *      *                                 si non : continue ver le prochain tour
      */
-    public void game_play(int action_phy, int action_mag){
+    public void game_play(int action_phy, int action_mag) {
         double damage = 0;
         ///  rafraichie les information du combat
         lbl_ennemi_pv.setText("PV : " + current_enemie.vie_max + "/" + current_enemie.vie_actuel);
@@ -360,7 +360,7 @@ public class BattleGameController extends com.example.projet_oop_rogue.controlle
         double att_m = main_character.att_mag_stats;
         /// calcule des dégats prit par le monstre est appliction de ces derniers
         damage = current_enemie.calcul_damages(att_p, att_m, action_phy, action_mag);
-        Info_fight.appendText("Votre ennemie a prit " + damage + " dégats"+ "\n ");
+        Info_fight.appendText("Votre ennemie a prit " + damage + " dégats" + "\n ");
         lbl_ennemi_pv.setText("PV : " + current_enemie.vie_max + "/" + current_enemie.vie_actuel);
 
         // vérification victoire
@@ -388,7 +388,7 @@ public class BattleGameController extends com.example.projet_oop_rogue.controlle
         lbl_score.setText("you are at the : " + current_floor + " floor");
     }
  */
-        if(current_enemie.vie_actuel <= 0) {
+        if (current_enemie.vie_actuel <= 0) {
             current_floor = current_floor + 1;
             curremt_score = curremt_score + current_enemie.get_points();
             lbl_stats.setText("score actuel : " + curremt_score);
@@ -406,8 +406,7 @@ public class BattleGameController extends com.example.projet_oop_rogue.controlle
                 javafx.stage.Stage stage = (javafx.stage.Stage) lbl_player_pv.getScene().getWindow();
                 stage.close();
             }
-        }
-        else { // S'exécute si le monstre est toujours vivant après l'attaque du joueur
+        } else { // S'exécute si le monstre est toujours vivant après l'attaque du joueur
             damage = main_character.calcul_damages(current_enemie.att_phy_stats, current_enemie.att_mag_stats, current_enemie.get_cond_phy(), current_enemie.get_cond_mag()); // Calcule et applique les dégâts infligés par le monstre au joueur
             Info_fight.appendText("Vous avez prit " + damage + " dégats" + "\n "); // Affiche la sentence des dégâts reçus dans la console de combat
             lbl_player_pv.setText("PV : " + main_character.vie_max + "/" + main_character.vie_actuel); // Actualise l'étiquette visuelle des points de vie du joueur
@@ -434,7 +433,7 @@ public class BattleGameController extends com.example.projet_oop_rogue.controlle
                 } // Ferme le bloc de capture d'erreur catch
             } // Ferme la condition de vérification de défaite
         } // Ferme le bloc général du tour du monstre else
-
+    };
     /**
      * Bouton qui lance la méthode game_play avec pour action joueur une attaque normal
      */
