@@ -13,15 +13,6 @@ import javafx.scene.text.Text;
 import java.util.Random;
 
 public class PongGameController extends com.example.projet_oop_rogue.controllers.Game {
-    // On injecte TOUS les composants du fichier FXML
-    @FXML private Pane gamePane;
-    @FXML private Rectangle paddle;
-    @FXML private Circle ball;
-    @FXML private Text scoreText;
-    @FXML private Text speedText;
-    @FXML private VBox screenOverlay;
-    @FXML private Text mainTitle;
-    @FXML private Text subTitle;
 
     // =========================================================
     // NOUVEAU : Le lien de communication avec ta carte principale
@@ -31,6 +22,16 @@ public class PongGameController extends com.example.projet_oop_rogue.controllers
     public void setMainController(MainGameController mainController) {
         this.mainController = mainController;
     }
+
+    // On injecte TOUS les composants du fichier FXML
+    @FXML private Pane gamePane;
+    @FXML private Rectangle paddle;
+    @FXML private Circle ball;
+    @FXML private Text scoreText;
+    @FXML private Text speedText;
+    @FXML private VBox screenOverlay;
+    @FXML private Text mainTitle;
+    @FXML private Text subTitle;
 
     public Pane getGamePane() {
         return gamePane;
@@ -93,9 +94,24 @@ public class PongGameController extends com.example.projet_oop_rogue.controllers
                 paddle.setLayoutX(mouseX);
             }
         });
-
+/*
         scene.setOnKeyPressed(e -> {
             if (gameState == State.START_SCREEN && e.getCode() == KeyCode.SPACE) {
+                startGame();
+            } else if (gameState == State.GAME_OVER && e.getCode() == KeyCode.SPACE) {
+                resetGameVariables();
+                startGame();
+            }
+        });
+ */
+        scene.setOnKeyPressed(e -> {
+            // NOUVEAU : Condition pour quitter le mini-jeu avec la touche ECHAP
+            if (e.getCode() == KeyCode.ESCAPE) {
+                javafx.stage.Stage stage = (javafx.stage.Stage) gamePane.getScene().getWindow();
+                stage.close(); // Ferme la fenêtre modale et redonne le contrôle à la carte principale
+            }
+            // Logique de relance existante
+            else if (gameState == State.START_SCREEN && e.getCode() == KeyCode.SPACE) {
                 startGame();
             } else if (gameState == State.GAME_OVER && e.getCode() == KeyCode.SPACE) {
                 resetGameVariables();
@@ -159,7 +175,6 @@ public class PongGameController extends com.example.projet_oop_rogue.controllers
         int speedPct = Math.max(0, (int) Math.round(((currentSpeed / initialSpeed) - 1) * 100));
         speedText.setText("Vittesse : " + speedPct + "%");
     }
-
 /*
     private void endGame() {
         gameState = State.GAME_OVER;
@@ -228,7 +243,6 @@ public class PongGameController extends com.example.projet_oop_rogue.controllers
     }
 
 
-
     private void resetGameVariables() {
         score = 0;
         ballX = width / 2.0;
@@ -241,6 +255,4 @@ public class PongGameController extends com.example.projet_oop_rogue.controllers
         paddle.setLayoutX((width - paddle.getWidth()) / 2);
     }
 }
-
-
 
