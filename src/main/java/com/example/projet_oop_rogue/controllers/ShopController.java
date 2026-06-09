@@ -4,29 +4,34 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class ShopController {
+public class ShopController extends com.example.projet_oop_rogue.controllers.Game {
 
     @FXML
     private Label goldLabel;
     @FXML
     private Label messageLabel;
 
-    // Variables temporaires pour simuler l'économie (à lier à ta vraie classe Joueur plus tard)
-    private int playerGold = 100;
+    private MainGameController mainController;
 
-    @FXML
-    public void initialize() {
+    public void setMainController(MainGameController mainController) {
+        this.mainController = mainController;
         updateGoldDisplay();
     }
 
     @FXML
     private void buyPotion() {
-        if (playerGold >= 20) {
-            playerGold -= 20;
+        // On continue d'utiliser le mainController pour modifier les variables de la carte !
+        if (mainController != null && mainController.getPlayerGold() >= 20) {
+            mainController.setPlayerGold(mainController.getPlayerGold() - 20);
+
+            int nouveauxHP = Math.min(mainController.getPlayerMaxHP(), mainController.getPlayerHP() + 50);
+            mainController.setPlayerHP(nouveauxHP);
+
+            mainController.updatePlayerStatsUI();
+
             messageLabel.setText("Excellente infusion ! Vos HP sont restaurés.");
             messageLabel.setTextFill(javafx.scene.paint.Color.web("#2ecc71"));
             updateGoldDisplay();
-            // TODO : Ajouter la logique pour soigner le vrai joueur ici
         } else {
             showError();
         }
@@ -34,12 +39,23 @@ public class ShopController {
 
     @FXML
     private void buySword() {
-        if (playerGold >= 50) {
-            playerGold -= 50;
+        // 1. On vérifie sur la carte principale si le joueur a assez d'or
+        if (mainController != null && mainController.getPlayerGold() >= 50) {
+
+            // 2. On soustrait l'or sur la carte principale
+            mainController.setPlayerGold(mainController.getPlayerGold() - 50);
+
+            // 3. On ajoute les dégâts sur la carte principale
+            mainController.setPlayerDamage(mainController.getPlayerDamage() + 15);
+
+            // 4. On met à jour l'interface de la carte en arrière-plan
+            mainController.updatePlayerStatsUI();
+
+            // 5. On met à jour l'interface de la boutique
             messageLabel.setText("Une lame tranchante. Vos dégâts augmentent !");
             messageLabel.setTextFill(javafx.scene.paint.Color.web("#e74c3c"));
             updateGoldDisplay();
-            // TODO : Ajouter la logique pour augmenter les dégâts du vrai joueur ici
+
         } else {
             showError();
         }
@@ -51,7 +67,9 @@ public class ShopController {
     }
 
     private void updateGoldDisplay() {
-        goldLabel.setText("Votre Or : " + playerGold + " \uD83E\uDE99");
+        if (mainController != null) {
+            goldLabel.setText("Votre Or : " + mainController.getPlayerGold() + " Or");
+        }
     }
 
     @FXML

@@ -35,6 +35,14 @@
                     </font>
                 </Label>
                 <Label fx:id="damageLabel" text="Dégâts : 0" textFill="#e74c3c" />
+                <Label fx:id="goldStatsLabel" text="Or : 100" textFill="#f1c40f">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="15.0" />
+                    </VBox.margin>
+                </Label>
             </children>
         </VBox>
     </left>

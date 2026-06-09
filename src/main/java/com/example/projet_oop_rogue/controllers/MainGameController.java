@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 
-public class MainGameController {
+public class MainGameController extends com.example.projet_oop_rogue.controllers.Game {
 
     // ========================================================================
     // 1. DÉCLARATION DES VARIABLES FXML (INTERFACE GRAPHIQUE)
@@ -26,6 +26,9 @@ public class MainGameController {
 
     @FXML
     private GridPane gameBoard; // Grille centrale pour la carte du donjon
+
+    @FXML
+    private Label goldStatsLabel; // Affichage de l'or sur la carte
 
 
     // ========================================================================
@@ -121,7 +124,7 @@ public class MainGameController {
             {0, 0, 3, 3, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 3, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // Ligne 10 : Ennemi 5 (bas centre)
             {0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            {0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
     // Classe pour la génération par blocs d'obstacles sur la map
@@ -213,6 +216,20 @@ public class MainGameController {
         setupControls();
 
 
+    }
+
+    /**
+     * Actualise les composants textuels de l'interface graphique.
+     */
+    public void updatePlayerStatsUI() {
+        // playerHP et playerMaxHP sont reconnus automatiquement grâce à l'héritage !
+        hpLabel.setText("HP : " + playerHP + " / " + playerMaxHP); // Met à jour le texte affichant les points de vie actuels et maximums
+        damageLabel.setText("Dégâts : " + playerDamage); // Met à jour le texte affichant la puissance d'attaque
+
+        // Synchronisation de l'affichage de l'or
+        if (goldStatsLabel != null) { // Vérifie si le composant graphique de l'or a bien été chargé par Scene Builder pour éviter un plantage
+            goldStatsLabel.setText("Or : " + playerGold); // Met à jour le texte avec la quantité d'or actuelle du joueur
+        }
     }
 
 
@@ -328,23 +345,39 @@ public class MainGameController {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/com/example/projet_oop_rogue/fxml/ShopPage.fxml")); // Vérifie bien ce chemin !
             javafx.scene.Parent root = loader.load();
 
-            javafx.stage.Stage shopStage = new javafx.stage.Stage();
-            shopStage.setTitle("💰 Boutique");
-            shopStage.setScene(new javafx.scene.Scene(root));
+            // BUG !!! : LIGNES IMPORTANTES POUR LE LIEN DE COMMUNICATION ENTRE SHOP ET MAINGAME !!!
+            ShopController shopController = loader.getController(); // Récupère le contrôleur de la boutique fraîchement créé
+            shopController.setMainController(this); // Injecte la référence de la carte (this) dans la boutique !
 
-            // Verrouillage Modal pour mettre la carte en pause
-            shopStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-            shopStage.setResizable(false);
+            javafx.stage.Stage shopStage = new javafx.stage.Stage(); // Crée une nouvelle fenêtre indépendante pour la boutique
+            shopStage.setTitle("Boutique"); // Définit le titre de la fenêtre qui apparaîtra dans la barre supérieure
+            shopStage.setScene(new javafx.scene.Scene(root)); // Attache l'interface visuelle (le fichier FXML chargé) à cette nouvelle fenêtre
 
-            shopStage.showAndWait(); // Le jeu s'arrête ici jusqu'à ce que le joueur quitte la boutique
+            shopStage.initModality(javafx.stage.Modality.APPLICATION_MODAL); // Bloque les clics sur la carte principale tant que la boutique est ouverte
 
-            if (battleLogs != null) {
-                battleLogs.appendText("\n> Vous quittez la boutique.");
+            shopStage.initOwner(gameBoard.getScene().getWindow()); // Définit la carte principale comme fenêtre "parente" légitime de la boutique
+            shopStage.setResizable(false); // Empêche le joueur d'étirer ou de rétrécir la fenêtre avec sa souris
+
+            shopStage.setOnShown(event -> { // Déclenche ce bloc de calcul exactement au moment où la fenêtre devient visible à l'écran
+                javafx.geometry.Bounds bounds = gameBoard.localToScreen(gameBoard.getBoundsInLocal()); // Récupère la position et la taille réelles de la grille de jeu sur l'écran du joueur
+
+                double centerX = bounds.getMinX() + (bounds.getWidth() / 2d) - (shopStage.getWidth() / 2d); // Calcule le point parfait pour centrer la boutique horizontalement
+                double centerY = bounds.getMinY() + (bounds.getHeight() / 2d) - (shopStage.getHeight() / 2d); // Calcule le point parfait pour centrer la boutique verticalement
+
+                shopStage.setX(centerX); // Déplace physiquement la fenêtre de la boutique sur ce nouveau point X
+                shopStage.setY(centerY); // Déplace physiquement la fenêtre de la boutique sur ce nouveau point Y
+            });
+
+            shopStage.showAndWait(); // Affiche la fenêtre à l'écran et met en pause le reste du code jusqu'à ce qu'elle soit fermée
+
+            if (battleLogs != null) { // Vérifie que la console de texte existe bien
+                battleLogs.appendText("\n> Vous quittez la boutique."); // Ajoute une ligne de texte pour confirmer la sortie
             }
 
-        } catch (Exception e) {
-            System.err.println("Erreur critique : Fichier Shop.fxml introuvable.");
-            e.printStackTrace();
+        }
+        catch (Exception e) { // Capture toute erreur inattendue lors de l'ouverture
+            System.err.println("Erreur critique : Fichier ShopPage.fxml introuvable ou corrompu."); // Affiche l'erreur en rouge dans la console technique
+            e.printStackTrace(); // Imprime l'historique détaillé de l'erreur pour aider au débogage
         }
     }
 
