@@ -1,4 +1,90 @@
 package com.example.projet_oop_rogue.controllers;
+import com.example.projet_oop_rogue.core.Game; // Import vital de la classe mère de ton projet
+import javafx.application.Platform; // Pour l'exécution asynchrone sécurisée Platform.runLater
+import javafx.animation.PauseTransition; // Pour la pause temporelle lors du changement de monstre
+import javafx.fxml.FXML; // Indispensable pour relier le Java au FXML
+import javafx.scene.control.Button; // Type pour tes boutons d'action
+import javafx.scene.control.Label; // Type pour tes affichages de PV et Noms
+import javafx.scene.control.TextArea; // Type pour la boîte d'historique de combat Info_fight
+import javafx.scene.image.ImageView; // Type pour tous tes sprites de héros et monstres
+import javafx.util.Duration; // Pour définir la durée des pauses
+
+import java.io.IOException; // Pour gérer les erreurs d'ouverture de l'écran Game Over
+import java.util.Random; // Pour le choix aléatoire des monstres
+
+// Imports des classes personnages de tes camarades
+import com.example.projet_oop_rogue.characters.heroes.mage;
+import com.example.projet_oop_rogue.characters.heroes.chevalier;
+import com.example.projet_oop_rogue.characters.heroes.voleur;
+import com.example.projet_oop_rogue.characters.monster.monstre;
+
+public class BattleGameController extends Game { // Début de la classe qui hérite proprement de Game
+
+    // =========================================================
+    // NOUVEAU : Le lien de communication avec ta carte principale
+    // =========================================================
+    private MainGameController mainController; // Variable qui recevra la référence de ta carte
+    private boolean battleWon = false; // Variable de contrôle pour la fin de partie
+
+    public void setMainController(MainGameController mainController) { // Méthode cruciale d'injection
+        this.mainController = mainController; // Reçoit et sauvegarde la carte principale
+    }
+
+    // =========================================================
+    // RESTAURATION DES COMPOSANTS GRAPHIQUES (UI)
+    // =========================================================
+    @FXML
+    private javafx.scene.control.Label lbl_des_att; // Relie le texte de description de l'attaque normale
+    @FXML
+    private javafx.scene.control.Label lbl_des_ult; // Relie le texte de description de l'attaque ultime
+    @FXML
+    private javafx.scene.control.Label lbl_des_object; // Relie le texte de description de l'objet
+    @FXML
+    private javafx.scene.control.Label lbl_player_name; // Relie l'affichage du nom du héros
+    @FXML
+    private javafx.scene.control.Label lbl_player_pv; // Relie l'affichage des points de vie du héros
+    @FXML
+    private javafx.scene.control.Label lbl_ennemi_name; // Relie l'affichage du nom du monstre
+    @FXML
+    private javafx.scene.control.Label lbl_ennemi_pv; // Relie l'affichage des points de vie du monstre
+    @FXML
+    private javafx.scene.control.Label lbl_score; // Relie l'affichage de l'étage actuel
+    @FXML
+    private javafx.scene.control.Label lbl_stats; // Relie l'affichage du score total
+
+    @FXML
+    private javafx.scene.image.ImageView pic_Dragon_King; // Relie le sprite du boss Roi Dragon
+    @FXML
+    private javafx.scene.image.ImageView pic_vampier_queen; // Relie le sprite du boss Reine Vampire
+    @FXML
+    private javafx.scene.image.ImageView pic_unknow_god; // Relie le sprite du boss final Inconnu
+    @FXML
+    private javafx.scene.image.ImageView pic_dragon; // Relie le sprite du monstre Dragon
+    @FXML
+    private javafx.scene.image.ImageView pic_vampier; // Relie le sprite du monstre Vampire
+    @FXML
+    private javafx.scene.image.ImageView pic_squeleton; // Relie le sprite du monstre Squelette
+    @FXML
+    private javafx.scene.image.ImageView pic_werewolf; // Relie le sprite du monstre Loup-Garou
+    @FXML
+    private javafx.scene.image.ImageView pic_voleur; // Relie le sprite de la classe Voleur
+    @FXML
+    private javafx.scene.image.ImageView pic_chevalier; // Relie le sprite de la classe Chevalier
+    @FXML
+    private javafx.scene.image.ImageView pic_mage; // Relie le sprite de la classe Mage
+
+    @FXML
+    private javafx.scene.control.TextArea Info_fight; // Relie la grande boîte de texte qui raconte le combat
+    @FXML
+    private javafx.scene.control.Button btn_att; // Relie le bouton cliquable de l'attaque basique
+    @FXML
+    private javafx.scene.control.Button btn_ult; // Relie le bouton cliquable de l'attaque ultime
+    @FXML
+    private javafx.scene.control.Button btn_object; // Relie le bouton cliquable de l'inventaire
+
+
+/*
+package com.example.projet_oop_rogue.controllers;
 
 import com.example.projet_oop_rogue.core.Game;
 import com.example.projet_oop_rogue.controllers.sceneController;
@@ -19,10 +105,11 @@ import java.io.IOException;
 import java.util.Random;
 
 import static com.example.projet_oop_rogue.controllers.sceneController.switchScene;
-
+*/
 /**
  * Controler des séquences de combats
  */
+/*
 public class BattleGameController extends com.example.projet_oop_rogue.controllers.Game {
 
     // =========================================================
@@ -81,6 +168,8 @@ public class BattleGameController extends com.example.projet_oop_rogue.controlle
     private Button btn_ult;
     @FXML
     private Button btn_object;
+ */
+
 
     /**
      * Méthode d'initialisation de la scene
