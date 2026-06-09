@@ -1,8 +1,18 @@
 package com.example.projet_oop_rogue.controllers;
 
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.util.Random;
 
 public class ShopController extends com.example.projet_oop_rogue.controllers.Game {
 

@@ -381,6 +381,46 @@ public class MainGameController extends com.example.projet_oop_rogue.controllers
         }
     }
 
+    private void openPong() {
+        try { // Ouvre un bloc sécurisé pour capturer les erreurs de chargement de fichier
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/com/example/projet_oop_rogue/fxml/games/Pong.fxml")); // Prépare le chargement du fichier visuel du mini-jeu
+            javafx.scene.Parent root = loader.load(); // Lit le fichier XML et le transforme en objets Java en mémoire
+
+            PongGameController pongController = loader.getController(); // Récupère le contrôleur du Pong qui vient d'être créé par JavaFX
+            pongController.setMainController(this); // Injecte la référence de la carte principale pour que le Pong puisse modifier l'or
+
+            javafx.stage.Stage pongStage = new javafx.stage.Stage(); // Crée une nouvelle fenêtre indépendante pour afficher le jeu d'arcade
+            pongStage.setTitle("Mini-Jeu : Arcade Pong"); // Définit le titre de la nouvelle fenêtre
+
+            javafx.scene.Scene pongScene = new javafx.scene.Scene(root); // Crée la scène principale contenant tous les éléments visuels du Pong
+            pongStage.setScene(pongScene); // Attache cette scène à la fenêtre
+
+            pongController.setupInputs(pongScene); // ÉTAPE CRUCIALE : Active les contrôles de la souris et du clavier programmés par ton camarade sur cette scène précise
+
+            pongStage.initModality(javafx.stage.Modality.APPLICATION_MODAL); // Gèle la carte principale en arrière-plan pour empêcher le joueur de bouger pendant qu'il joue au Pong
+            pongStage.initOwner(gameBoard.getScene().getWindow()); // Indique au système que la carte principale est la propriétaire de cette sous-fenêtre
+            pongStage.setResizable(false); // Verrouille la taille de la fenêtre pour ne pas fausser les rebonds de la balle
+
+            pongStage.setOnShown(event -> { // Prépare le centrage géométrique de la fenêtre une fois qu'elle est prête à s'afficher
+                javafx.geometry.Bounds bounds = gameBoard.localToScreen(gameBoard.getBoundsInLocal()); // Calcule les coordonnées réelles de la carte sur l'écran
+                double centerX = bounds.getMinX() + (bounds.getWidth() / 2d) - (pongStage.getWidth() / 2d); // Aligne le centre horizontal
+                double centerY = bounds.getMinY() + (bounds.getHeight() / 2d) - (pongStage.getHeight() / 2d); // Aligne le centre vertical
+                pongStage.setX(centerX); // Applique la nouvelle position X
+                pongStage.setY(centerY); // Applique la nouvelle position Y
+            });
+
+            pongStage.showAndWait(); // Affiche la fenêtre et met le code de la carte en pause jusqu'à la fermeture du Pong
+
+            if (battleLogs != null) { // Vérifie que la console d'historique est bien initialisée
+                battleLogs.appendText("\n> Vous quittez la borne d'arcade."); // Affiche un message confirmant le retour sur la carte
+            }
+
+        } catch (Exception e) { // Attrape les éventuelles erreurs (fichier introuvable, contrôleur mal lié)
+            System.err.println("Erreur critique : Fichier Pong.fxml introuvable."); // Affiche un message d'erreur clair dans la console
+            e.printStackTrace(); // Imprime la trace complète de l'erreur pour le débogage
+        }
+    }
+
 
     // ========================================================================
     // 6. GÉNÉRATION DE LA CARTE (MOTEUR 2D)
@@ -635,11 +675,11 @@ public class MainGameController extends com.example.projet_oop_rogue.controllers
                 }
                 else if (cellData == 4) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence d'un ennemi
                     // Place un ennemi (cherche l'image silhouette.png, sinon carré rouge)
-                    placeEntity(x, y, "characters/map/silhouette.png", 4, "#c0392b"); // On précise qu'il faut aller dans characters/map/
+                    placeEntity(x, y, "characters/map/silouhette.png", 4, "#c0392b"); // On précise qu'il faut aller dans characters/map/
                 }
                 else if (cellData == 5) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence du mini jeu
                     // Place le déclencheur Pong (cherche l'image workbench.png, sinon carré jaune)
-                    placeEntity(x, y, "environment/map/workbench.png", 5, "#f1c40f"); // On précise qu'il faut aller dans environment/map/
+                    placeEntity(x, y, "environment/map/pong.png", 5, "#f1c40f"); // On précise qu'il faut aller dans environment/map/
                 }
                 else if (cellData == 6) {
                     // Place le magasin (cherche shop.png, sinon carré marron)
@@ -769,18 +809,21 @@ public class MainGameController extends com.example.projet_oop_rogue.controllers
                 javafx.scene.layout.GridPane.setRowIndex(playerSprite, playerY);
 
             }
+
             else if (targetCell == 1) {
                 // Collision avec un mur fixe (obstacle type 1)
                 if (battleLogs != null) {
                     battleLogs.appendText("\n> Un mur d'enceinte infranchissable vous bloque !");
                 }
             }
+
             else if (targetCell == 2) {
                 // Collision avec un rocher aléatoire (obstacle type 2)
                 if (battleLogs != null) {
                     battleLogs.appendText("\n> Un éboulement de rochers vous bloque le passage !");
                 }
             }
+
             else if (targetCell == 4) {
                 // NOUVEAU : Interaction avec un Ennemi
                 if (battleLogs != null) {
@@ -789,20 +832,20 @@ public class MainGameController extends com.example.projet_oop_rogue.controllers
                 // TODO : Lancer la scène de combat ici
                 // Appel de la méthode de combat en transmettant les coordonnées de la cible
                 startBattle(newX, newY);
-
             }
-            else if (targetCell == 5) {
-                // NOUVEAU : Interaction avec le Mini-jeu
-                if (battleLogs != null) {
-                    battleLogs.appendText("\n> Vous avez trouvé la borne d'arcade mystère !");
-                }
+
+            else if (targetCell == 5) { // Vérifie si la case visée correspond à l'identifiant de la borne d'arcade
+                if (battleLogs != null) { // Sécurité pour éviter un crash si l'historique texte n'existe pas
+                    battleLogs.appendText("\n> Vous avez trouvé la borne d'arcade mystère !"); // Informe le joueur qu'il interagit avec la borne
+                } // Ferme le bloc if des logs
                 // TODO : Lancer la scène du mini-jeu Pong ici
+                openPong(); // Appelle la méthode qui charge, configure et affiche la fenêtre du mini-jeu pong
+            } // Ferme la condition de la borne d'arcade
 
-            }
             else if (targetCell == 6) {
                 // Interaction avec le Magasin
                 if (battleLogs != null) {
-                    battleLogs.appendText("\n> 🪙 Bienvenue dans la boutique !");
+                    battleLogs.appendText("\n> Bienvenue dans la boutique !");
                 }
                 // TODO : Lancer la scène du magasin ici
                 openShop(); // Appel de la fenêtre du shop !
