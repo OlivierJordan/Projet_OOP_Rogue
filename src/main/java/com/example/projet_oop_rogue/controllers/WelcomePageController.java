@@ -49,6 +49,11 @@ public class WelcomePageController extends Game {
     @FXML
     private ImageView characterImageView; // Composant d'affichage de l'avatar du personnage
 
+    // Lecture/Ecriture dans le fichier pour tableau des scores
+    @FXML
+    private javafx.scene.control.ListView<String> list_scores; // On importe la liste de la WelcomePage
+
+
     // ========================================================================
     // 2. VARIABLES DE LOGIQUE INTERNE
     // ========================================================================
@@ -66,7 +71,14 @@ public class WelcomePageController extends Game {
      */
     @FXML
     public void initialize() throws IOException {
+
         // Ajout de scores factices pour tester l'affichage (à remplacer par la lecture de fichier)
+
+        // TODO : Lecture des scores dans le fichier du tableau des scores
+
+        // Appelle methode pour lire les scores dans le fichier
+        chargerLeaderboard();
+
     }
 
     // ========================================================================
@@ -182,7 +194,7 @@ public class WelcomePageController extends Game {
     private void updateCharacterImage(String fileName) {
         try {
             // Construction du chemin absolu vers le dossier assets
-            String imagePath = getClass().getResource("/com/example/projet_oop_rogue/assets/characters/" + fileName).toExternalForm();
+            String imagePath = getClass().getResource("/com/example/projet_oop_rogue/assets/characters/map/" + fileName).toExternalForm();
 
             // Instanciation de l'objet Image et injection dans la vue
             javafx.scene.image.Image characterImage = new javafx.scene.image.Image(imagePath);
@@ -193,6 +205,78 @@ public class WelcomePageController extends Game {
             System.err.println("Avertissement : L'image '" + fileName + "' est introuvable dans le dossier assets/characters/");
         }
     }
+
+    // TODO : Méthode pour la Lecture/Ecriture dans le fichier pour le tableau des scores
+
+    /**
+     * Méthode appelée dans le initialize() de la WelcomePage pour charger les scores
+     */
+    private void chargerLeaderboard() {
+
+        // IMPORTANT !!! : On vide la liste avant de la re-remplir pour éviter les doublons
+        // si le joueur fait plusieurs parties d'affilée sans fermer le jeu.
+        if (list_scores != null) {
+            list_scores.getItems().clear();
+        }
+
+        // try-with-resources pour refermer automatiquement le fichier après lecture
+        try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader("leaderboard.csv"))) {
+            String ligne;
+
+            // On lit le fichier ligne par ligne jusqu'à la fin (null)
+            while ((ligne = br.readLine()) != null) {
+
+                // On découpe la ligne à chaque virgule
+                String[] donnees = ligne.split(",");
+
+                // CORRECTION : On accepte les lignes qui ont 3 éléments OU PLUS (>= 3)
+                if (donnees.length >= 3) {
+                    String nom = donnees[0];
+                    String score = donnees[1];
+                    String etage = donnees[2];
+
+                    // On écrit le score dans la console pour vérifier
+                    System.out.println("Héros: " + nom + " | Score: " + score + " | Étage: " + etage);
+
+                    // NOUVEAU : On récupère la classe du héros (avec une sécurité pour les anciennes sauvegardes à 3 colonnes)
+                    String classeHeros = (donnees.length >= 4) ? donnees[3] : "Inconnu";
+
+                    // On crée une belle phrase et on l'ajoute visuellement dans la ListView
+                    String affichage = nom + " (" + classeHeros + ") - Score : " + score + " (Étage " + etage + ")";
+                    list_scores.getItems().add(affichage);
+                }
+            }
+        } catch (java.io.IOException e) {
+
+            // Première partie du joueur, le fichier n'existe pas encore
+            // Si le fichier n'existe pas encore (première partie), ce n'est pas grave
+            System.out.println("Aucun fichier de score trouvé. Il sera créé à la fin de la première partie.");
+
+            // Première partie du joueur, le fichier n'existe pas encore
+            list_scores.getItems().add("Aucun score enregistré pour le moment.");
+        }
+    }
+
+    // TODO : Pouvoir réinitialiser le tableau des scores
+
+    /**
+     * Bouton pour réinitialiser le tableau des scores
+     */
+    @FXML
+    protected void on_btn_reset_click() {
+        try {
+            // L'ouverture avec PrintWriter sans le paramètre 'true' écrase automatiquement le fichier
+            new java.io.PrintWriter("leaderboard.csv").close();
+
+            // On vide visuellement la liste
+            list_scores.getItems().clear();
+            list_scores.getItems().add("Le tableau a été réinitialisé.");
+
+        } catch (java.io.FileNotFoundException e) {
+            System.out.println("Le fichier de sauvegarde n'existe pas encore.");
+        }
+    }
+
 
 }
 

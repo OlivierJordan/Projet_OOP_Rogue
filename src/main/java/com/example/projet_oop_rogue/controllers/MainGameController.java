@@ -599,7 +599,7 @@ public class MainGameController extends Game {
         String fileName = heroClass.toLowerCase() + ".png";
 
         try {
-            String imagePath = getClass().getResource("/com/example/projet_oop_rogue/assets/characters/" + fileName).toExternalForm();
+            String imagePath = getClass().getResource("/com/example/projet_oop_rogue/assets/characters/map/" + fileName).toExternalForm();
             playerSprite = new ImageView(new Image(imagePath));
 
             // 2. Ajustement de la taille de l'image pour qu'elle rentre dans la case (légèrement plus petite que TILE_SIZE)
