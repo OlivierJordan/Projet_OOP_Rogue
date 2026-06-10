@@ -36,7 +36,7 @@ public class ShopController extends Game {
             nbr_obj += 2;
 
             // 5. On met à jour l'interface de la boutique
-            messageLabel.setText("vous avez bu une potion + 250 HP! et obtenu 2 objets");
+            messageLabel.setText("vous avez bu une potion + 250 HP! et obtenu 2 objets | votre vie est passer à : " + main_character.vie_actuel);
             messageLabel.setTextFill(javafx.scene.paint.Color.web("#e74c3c"));
             updateGoldDisplay();
             stock_potion -= 1;

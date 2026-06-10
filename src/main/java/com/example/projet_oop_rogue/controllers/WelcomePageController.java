@@ -13,6 +13,8 @@ import javafx.scene.control.TextField;
 // On importe la classe ImageView pour l'affichage de l'avatar du personnage
 import javafx.scene.image.ImageView;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class WelcomePageController extends Game {
