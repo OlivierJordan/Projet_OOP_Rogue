@@ -285,7 +285,7 @@ public class MainGameController extends Game {
      * @param enemyY La coordonnée Y de l'ennemi sur la grille logique.
      */
     private void startBattle(int enemyX, int enemyY) {
-        ScenesController.switchScene("/com/example/projet_oop_rogue/fxml/games/Game_Main.fxml");
+        ScenesController.switchScene("/com/example/projet_oop_rogue/fxml/games/BattleGame.fxml");
     }
 
     /**

@@ -11,12 +11,12 @@
    <children>
       <ImageView fitHeight="400.0" fitWidth="600.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/environment/map/welcomBackground.png" />
+            <Image url="@../assets/backgrounds/background_welcomescene.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="70.0" fitWidth="195.0" layoutX="234.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/btn.png" />
+            <Image url="@../assets/ui/btn.png" />
          </image>
       </ImageView>
       <Button fx:id="btn_start" layoutX="220.0" layoutY="287.0" mnemonicParsing="false" onAction="#on_btn_start" prefHeight="70.0" prefWidth="171.0" style="-fx-background-color: transparent;" text="Lets start">

@@ -264,7 +264,7 @@ public class BattleGameController extends Game {
             // vérification défaite
             /// change de scene ver la loosing screen
             if(main_character.vie_actuel <= 0){
-                ScenesController.switchScene("/com/example/projet_oop_rogue/fxml/games/losing_screen.fxml");
+                ScenesController.switchScene("/com/example/projet_oop_rogue/fxml/games/GameOverBattle.fxml");
             }
         }
         /// actualise le score

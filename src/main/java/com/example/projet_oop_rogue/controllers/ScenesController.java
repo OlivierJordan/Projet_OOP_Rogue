@@ -52,7 +52,7 @@ public class ScenesController {
             try {
 
                 FXMLLoader loader = new FXMLLoader(
-                        ScenesController.class.getResource("/com/example/projet_oop_rogue/fxml/games/seconde_game.fxml")
+                        ScenesController.class.getResource("/com/example/projet_oop_rogue/fxml/games/PongGame.fxml")
                 );
 
                 Parent root = loader.load();

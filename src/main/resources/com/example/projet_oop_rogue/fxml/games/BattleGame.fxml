@@ -10,26 +10,26 @@
    <children>
       <ImageView fitHeight="343.0" fitWidth="714.0" pickOnBounds="true">
          <image>
-            <Image url="@../../assets/ui/battle/background_battle.png" />
+            <Image url="@../../assets/backgrounds/background_battle.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="129.0" fitWidth="718.0" layoutX="-4.0" layoutY="343.0" pickOnBounds="true">
          <image>
-            <Image url="@../../assets/back.png" />
+            <Image url="@../../assets/backgrounds/background_battle_2.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="52.0" fitWidth="177.0" layoutX="45.0" layoutY="339.0" pickOnBounds="true">
          <image>
-            <Image url="@../../assets/btn.png" />
+            <Image url="@../../assets/ui/btn.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="52.0" fitWidth="177.0" layoutX="261.0" layoutY="342.0" pickOnBounds="true">
          <image>
-            <Image url="@../../assets/btn.png" />
+            <Image url="@../../assets/ui/btn.png" />
          </image></ImageView>
       <ImageView fitHeight="52.0" fitWidth="186.0" layoutX="470.0" layoutY="339.0" pickOnBounds="true">
          <image>
-            <Image url="@../../assets/btn.png" />
+            <Image url="@../../assets/ui/btn.png" />
          </image>
       </ImageView>
       <Button fx:id="btn_att" layoutX="59.0" layoutY="340.0" mnemonicParsing="false" onAction="#on_btn_att" prefHeight="52.0" prefWidth="150.0" style="-fx-background-color: transparent;" text="attaque normal" textFill="WHITE">

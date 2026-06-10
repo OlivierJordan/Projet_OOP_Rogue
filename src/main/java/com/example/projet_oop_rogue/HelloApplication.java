@@ -13,7 +13,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         ScenesController.setStage(stage);
         // 1. On pointe vers le chemin absolu de ta nouvelle WelcomePage
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/projet_oop_rogue/fxml/games/first_screen.fxml"));        // 2. On ajuste la taille de la fenêtre pour correspondre à notre HBox (800x600)
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/projet_oop_rogue/fxml/WelcomeScreen.fxml"));        // 2. On ajuste la taille de la fenêtre pour correspondre à notre HBox (800x600)
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         // 3. On met un titre professionnel à la fenêtre
         stage.setTitle("Rogue-like - Start");

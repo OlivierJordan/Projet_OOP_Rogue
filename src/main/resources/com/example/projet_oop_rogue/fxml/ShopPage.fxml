@@ -10,7 +10,7 @@
    <children>
       <ImageView fitHeight="393.0" fitWidth="582.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../assets/ui/shop/background_shop.png" />
+            <Image url="@../assets/backgrounds/background_shop.png" />
          </image></ImageView>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: transparent; -fx-border-color: #f1c40f; -fx-border-width: 5px;">
           <padding>
