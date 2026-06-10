@@ -3,7 +3,7 @@ package com.example.projet_oop_rogue.characters;
 /**
  * class abstraite character
  */
-abstract public class character {
+abstract public class Character {
     /// constante de vie, pour les calcules
     public final double const_vie = 1000;
     /// constante de dégat, pour les calcules
@@ -31,7 +31,7 @@ abstract public class character {
      * @param defm : Stast de défense magique
      * @param nom : nom du character
      */
-    public character(double vie, double attp, double attm, double defp, double defm, String nom){
+    public Character(double vie, double attp, double attm, double defp, double defm, String nom){
         this.vie_max = const_vie * vie;
         this.att_phy_stats = attp;
         this.att_mag_stats = attm;

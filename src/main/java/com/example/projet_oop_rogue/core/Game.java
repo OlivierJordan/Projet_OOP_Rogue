@@ -1,7 +1,7 @@
 package com.example.projet_oop_rogue.core;
 
 import com.example.projet_oop_rogue.characters.heroes.hero;
-import com.example.projet_oop_rogue.characters.monster.monstre;
+import com.example.projet_oop_rogue.characters.enemies.monstre;
 
 /**
  * classe mère de tous les jeux : Game

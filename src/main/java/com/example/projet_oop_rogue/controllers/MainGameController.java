@@ -560,11 +560,11 @@ public class MainGameController extends Game {
                 }
                 else if (cellData == 5) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence du mini jeu
                     // Place le déclencheur Pong (cherche l'image workbench.png, sinon carré jaune)
-                    placeEntity(x, y, "/com/example/projet_oop_rogue/assets/workbench.png", 5, "#f1c40f"); // On précise qu'il faut aller dans environment/map/
+                    placeEntity(x, y, "environment/map/pong.png", 5, "#f1c40f"); // On précise qu'il faut aller dans environment/map/
                 }
                 else if (cellData == 6) {
                     // Place le magasin (cherche shop.png, sinon carré marron)
-                    placeEntity(x, y, "/com/example/projet_oop_rogue/assets/shop.png", 6, "#8e44ad");
+                    placeEntity(x, y, "environment/map/shop.png", 6, "#8e44ad");
                 }
                 // Si worldMap[y][x] == 3, on ne dessine rien (c'est de l'herbe), mais on mémorise la protection plus tard
             }

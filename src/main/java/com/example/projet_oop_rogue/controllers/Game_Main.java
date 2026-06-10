@@ -1,24 +1,19 @@
 package com.example.projet_oop_rogue.controllers;
 
 import com.example.projet_oop_rogue.core.Game;
-import com.example.projet_oop_rogue.controllers.sceneController;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
-import com.example.projet_oop_rogue.characters.heroes.hero;
 import com.example.projet_oop_rogue.characters.heroes.voleur;
 import com.example.projet_oop_rogue.characters.heroes.mage;
 import com.example.projet_oop_rogue.characters.heroes.chevalier;
-import com.example.projet_oop_rogue.characters.monster.monstre;
+import com.example.projet_oop_rogue.characters.enemies.monstre;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.util.Random;
-
-import static com.example.projet_oop_rogue.controllers.sceneController.switchScene;
 
 /**
  * Controler des séquences de combats

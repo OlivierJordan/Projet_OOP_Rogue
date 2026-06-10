@@ -1,13 +1,11 @@
-package com.example.projet_oop_rogue.characters.monster;
+package com.example.projet_oop_rogue.characters.enemies;
 
-import com.example.projet_oop_rogue.characters.character;
-
-import java.util.Random;
+import com.example.projet_oop_rogue.characters.Character;
 
 /**
  * Classe monstre enfant de character
  */
-public class monstre extends character {
+public class monstre extends Character {
     /// stats de vie courante du monstre
     public double vie_actuel;
     ///  classe du monstre de 0 à 6 (0 = unknow | 1 = squellette | 2 = werewolf | 3 = vampire | 4 = dragon | 5 = reine des vampire | 6 = roi dragon)

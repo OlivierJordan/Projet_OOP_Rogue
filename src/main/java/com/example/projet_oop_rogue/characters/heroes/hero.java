@@ -1,13 +1,13 @@
 package com.example.projet_oop_rogue.characters.heroes;
 
-import com.example.projet_oop_rogue.characters.character;
+import com.example.projet_oop_rogue.characters.Character;
 
 import java.util.Random;
 
 /**
  * classe hero enfant de character
  */
-public class hero extends character {
+public class hero extends Character {
     /// Stats de vitesse : définit les chances d'esquivé une attaque sur 100%
     private double vit_stats;
     /// Stats de vie courant : vie du joueur

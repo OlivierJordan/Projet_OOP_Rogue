@@ -10,7 +10,7 @@
    <children>
       <ImageView fitHeight="343.0" fitWidth="714.0" pickOnBounds="true">
          <image>
-            <Image url="@../../assets/characters/background.png" />
+            <Image url="@../../assets/ui/battle/background_battle.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="129.0" fitWidth="718.0" layoutX="-4.0" layoutY="343.0" pickOnBounds="true">
@@ -83,43 +83,43 @@
          </font></Label>
       <ImageView fx:id="pic_Dragon_King" fitHeight="209.0" fitWidth="277.0" layoutX="411.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/characters/dragon%20king.png" />
+            <Image url="@../../assets/characters/battle/enemies/dragon king.png" />
          </image></ImageView>
       <ImageView fx:id="pic_unknow_god" fitHeight="209.0" fitWidth="277.0" layoutX="411.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/characters/unknow%20boss.png" />
+            <Image url="@../../assets/characters/battle/enemies/unknow boss.png" />
          </image></ImageView>
       <ImageView fx:id="pic_vampier_queen" fitHeight="209.0" fitWidth="277.0" layoutX="432.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/characters/reine%20vampire.png" />
+            <Image url="@../../assets/characters/battle/enemies/reine vampire.png" />
          </image></ImageView>
       <ImageView fx:id="pic_dragon" fitHeight="149.0" fitWidth="157.0" layoutX="528.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/characters/dragon.png" />
+            <Image url="@../../assets/characters/battle/enemies/dragon.png" />
          </image></ImageView>
       <ImageView fx:id="pic_vampier" fitHeight="139.0" fitWidth="149.0" layoutX="411.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/characters/vampire.png" />
+            <Image url="@../../assets/characters/battle/enemies/vampire.png" />
          </image></ImageView>
       <ImageView fx:id="pic_squeleton" fitHeight="149.0" fitWidth="169.0" layoutX="406.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/characters/squelette.png" />
+            <Image url="@../../assets/characters/battle/enemies/squelette.png" />
          </image></ImageView>
       <ImageView fx:id="pic_werewolf" fitHeight="163.0" fitWidth="157.0" layoutX="411.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/characters/loup.png" />
+            <Image url="@../../assets/characters/battle/enemies/loup.png" />
          </image></ImageView>
       <ImageView fx:id="pic_voleur" fitHeight="157.0" fitWidth="157.0" layoutX="59.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/characters/game_voleur.png" />
+            <Image url="@../../assets/characters/battle/heroes/game_voleur.png" />
          </image></ImageView>
       <ImageView fx:id="pic_chevalier" fitHeight="157.0" fitWidth="192.0" layoutX="103.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/characters/game_chevalier.png" />
+            <Image url="@../../assets/characters/battle/heroes/game_chevalier.png" />
          </image></ImageView>
       <ImageView fx:id="pic_mage" fitHeight="169.0" fitWidth="169.0" layoutX="35.0" layoutY="121.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/characters/game_mage.png" />
+            <Image url="@../../assets/characters/battle/heroes/game_mage.png" />
          </image></ImageView>
       <TextArea fx:id="Info_fight" layoutX="13.0" layoutY="296.0" prefHeight="42.0" prefWidth="675.0" />
    </children>

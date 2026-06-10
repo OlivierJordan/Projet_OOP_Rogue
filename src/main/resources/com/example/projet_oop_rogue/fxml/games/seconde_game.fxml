@@ -5,10 +5,10 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<Pane fx:id="gamePane" prefHeight="500.0" prefWidth="800.0" style="-fx-background-image: url('/com/example/projet_oop_rogue/assets/characters/background_2.png'); -fx-background-size: cover; -fx-background-position: center;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_oop_rogue.controllers.seconde_game_controler">
+<Pane fx:id="gamePane" prefHeight="500.0" prefWidth="800.0" style="-fx-background-image: url('/com/example/projet_oop_rogue/assets/ui/pong/background_pong.png'); -fx-background-size: cover; -fx-background-position: center;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_oop_rogue.controllers.seconde_game_controler">
    <ImageView fitHeight="569.0" fitWidth="800.0" pickOnBounds="true">
       <image>
-         <Image url="@../../assets/characters/background_2.png" />
+         <Image url="@../../assets/ui/pong/background_pong.png" />
       </image>
    </ImageView>
     <Rectangle fx:id="paddle" arcHeight="8.0" arcWidth="8.0" fill="#d1f7ff" height="15.0" width="120.0" />
