@@ -549,7 +549,7 @@ public class MainGameController extends Game {
                 }
                 else if (cellData == 4) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence d'un ennemi
                     // Place un ennemi (cherche l'image silhouette_chevalier.png, sinon carré rouge)
-                    placeEntity(x, y, "characters/map/silhouette_chevalier.png", 4, "#c0392b"); // On précise qu'il faut aller dans characters/map/
+                    placeEntity(x, y, "characters/map/silhouette_monstre.png", 4, "#c0392b"); // On précise qu'il faut aller dans characters/map/
                 }
                 else if (cellData == 5) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence du mini jeu
                     // Place le déclencheur Pong (cherche l'image workbench.png, sinon carré jaune)
