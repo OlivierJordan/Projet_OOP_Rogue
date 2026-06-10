@@ -1,5 +1,9 @@
 package com.example.projet_oop_rogue.controllers;
 
+import com.example.projet_oop_rogue.characters.heroes.chevalier;
+import com.example.projet_oop_rogue.characters.heroes.mage;
+import com.example.projet_oop_rogue.characters.heroes.voleur;
+import com.example.projet_oop_rogue.core.Game;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -9,7 +13,12 @@ import javafx.scene.control.TextField;
 // On importe la classe ImageView pour l'affichage de l'avatar du personnage
 import javafx.scene.image.ImageView;
 
-public class WelcomePageController {
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+public class WelcomePageController extends Game {
 
     // ========================================================================
     // 1. DÉCLARATION DES VARIABLES LIÉES À L'INTERFACE GRAPHIQUE (FXML)
@@ -57,11 +66,8 @@ public class WelcomePageController {
      * Utilisée pour configurer les valeurs par défaut.
      */
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         // Ajout de scores factices pour tester l'affichage (à remplacer par la lecture de fichier)
-        leaderboardList.getItems().add("1. Olivier - 5000 pts");
-        leaderboardList.getItems().add("2. JoueurTest - 3200 pts");
-        leaderboardList.getItems().add("3. Anonyme - 1500 pts");
     }
 
     // ========================================================================
@@ -75,7 +81,7 @@ public class WelcomePageController {
     protected void onMageSelected() {
         selectedClass = "Mage"; // Mémorisation du choix
         // Mise à jour de l'affichage avec les statistiques du Mage
-        statsDisplay.setText("Classe : MAGE\n\nPoints de vie (HP) : 80\nDégâts : 25\nSpécialité : Attaque magique à distance.");
+        statsDisplay.setText("Classe : MAGE\n\nPoints de vie (HP) : 800\nSpécialité : magie \n\nAttaque physique : 25% | Attaque magique : 100% \nDéfence physique : 25% | Défence magique : 50% \nVitesse : 25%");
         updateCharacterImage("mage.png"); // Chargement de l'image correspondante
     }
 
@@ -86,7 +92,7 @@ public class WelcomePageController {
     protected void onKnightSelected() {
         selectedClass = "Chevalier"; // Mémorisation du choix
         // Mise à jour de l'affichage avec les statistiques du Chevalier
-        statsDisplay.setText("Classe : CHEVALIER\n\nPoints de vie (HP) : 150\nDégâts : 15\nSpécialité : Haute défense et armure lourde.");
+        statsDisplay.setText("Classe : CHEVALIER\n\nPoints de vie (HP) : 1000\nSpécialité : physique \n\nAttaque physique : 100% | Attaque magique : 25% \nDéfence physique : 50% | Défence magique : 20% \nVitesse : 10%");
         updateCharacterImage("chevalier.png"); // Chargement de l'image correspondante
     }
 
@@ -97,7 +103,7 @@ public class WelcomePageController {
     protected void onThiefSelected() {
         selectedClass = "Voleur"; // Mémorisation du choix
         // Mise à jour de l'affichage avec les statistiques du Voleur
-        statsDisplay.setText("Classe : VOLEUR\n\nPoints de vie (HP) : 100\nDégâts : 20\nSpécialité : Esquive rapide et coups critiques.");
+        statsDisplay.setText("Classe : VOLEUR\n\nPoints de vie (HP) : 700\nSpécialité : esquive \n\nAttaque physique : 80% | Attaque magique : 45% \nDéfence physique : 35% | Défence magique : 35% \nVitesse : 40%");
         updateCharacterImage("voleur.png"); // Chargement de l'image correspondante
     }
 
@@ -133,37 +139,21 @@ public class WelcomePageController {
         System.out.println("Lancement du jeu réussi !");
         System.out.println("Joueur : " + playerName);
         System.out.println("Classe : " + selectedClass);
-
-        // --- SI TOUT EST OK, ON LANCE LE JEU ---
-
-        try {
-            // 1. Initialiser le chargeur FXML avec le chemin vers la vue du jeu principal
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/com/example/projet_oop_rogue/fxml/games/MainGame.fxml"));
-
-            // 2. Charger l'arbre des composants (la vue racine)
-            javafx.scene.Parent root = loader.load();
-
-            // 3. Récupérer l'instance du contrôleur qui vient d'être créé par le FXMLLoader
-            MainGameController gameController = loader.getController();
-
-            // 4. Passer les données au nouveau contrôleur via la méthode que l'on a créée à l'Étape 1
-            gameController.initData(playerName, selectedClass);
-
-            // 5. Récupérer la fenêtre actuelle (Stage) grâce au bouton sur lequel on vient de cliquer
-            javafx.stage.Stage stage = (javafx.stage.Stage) playButton.getScene().getWindow();
-
-            // 6. Créer une nouvelle scène avec la vue chargée, et l'appliquer à la fenêtre
-            javafx.scene.Scene scene = new javafx.scene.Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Rogue-like - En jeu");
-            stage.show();
-
-        } catch (java.io.IOException e) {
-            // Gestion de l'exception obligatoire lors du chargement de fichiers externes
-            System.err.println("Erreur critique : Impossible de charger MainGame.fxml");
-            e.printStackTrace();
-            showAlert("Erreur de chargement", "Le fichier du jeu principal est introuvable.");
+        if(selectedClass == "Mage"){
+            main_character = new mage(playerName);
+        } else if (selectedClass == "Voleur") {
+            main_character = new voleur(playerName);
         }
+        else {
+            main_character = new chevalier(playerName);
+        }
+        // --- SI TOUT EST OK, ON LANCE LE JEU ---
+        current_floor = 1;
+        curremt_score = 0;
+        nbr_obj = 10;
+        stock_potion = 20;
+        money = 0;
+        sceneController.go_to_lobby();
 
         // TODO: Code pour charger "MainGame.fxml" et transmettre playerName et selectedClass au contrôleur principal
     }
