@@ -2,55 +2,64 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #2c3e50; -fx-border-color: #f1c40f; -fx-border-width: 5px;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_oop_rogue.controllers.ShopController">
-    <padding>
-        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-    </padding>
-    <children>
-        <Label text="Échoppe du Marchand" textFill="#f1c40f">
-            <font>
-                <Font name="System Bold" size="36.0" />
-            </font>
-        </Label>
-        <Label fx:id="goldLabel" text="Votre Or : 100 Or" textFill="WHITE">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Label>
-        <HBox alignment="CENTER" spacing="30.0">
-            <children>
-                <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #34495e; -fx-background-radius: 10px; -fx-padding: 15px;">
-                    <children>
-                        <Label text="pack : Gourde de Yerba Maté (Playadito)" textFill="#2ecc71" wrapText="true">
-                            <font>
-                                <Font name="System Bold" size="14.0" />
-                            </font>
-                        </Label>
-                        <Label fx:id="lbl_potion_stock" text="Restaure 150 HP / +2 objets" textFill="WHITE" />
-                        <Button mnemonicParsing="false" onAction="#buyPotion" style="-fx-background-color: #f1c40f;" text="Acheter (50 Or)" />
-                    </children>
-                </VBox>
-                <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #34495e; -fx-background-radius: 10px; -fx-padding: 15px;">
-                    <children>
-                        <Label text="Lucky block" textFill="#e74c3c">
-                            <font>
-                                <Font name="System Bold" size="14.0" />
-                            </font>
-                        </Label>
-                        <Label text="????????" textFill="WHITE" />
-                        <Button mnemonicParsing="false" onAction="#buySword" style="-fx-background-color: #f1c40f;" text="Acheter (200 Or)" />
-                    </children>
-                </VBox>
-            </children>
-        </HBox>
-        <Label fx:id="messageLabel" text="Bienvenue ! Que désirez-vous ?" textFill="#bdc3c7" />
-        <Button mnemonicParsing="false" onAction="#closeShop" style="-fx-background-color: #95a5a6;" text="Quitter la boutique">
-            <VBox.margin>
-                <Insets top="20.0" />
-            </VBox.margin>
-        </Button>
-    </children>
-</VBox>
+<StackPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_oop_rogue.controllers.ShopController">
+   <children>
+      <ImageView fitHeight="393.0" fitWidth="582.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/ui/shop/background_shop.png" />
+         </image></ImageView>
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: transparent; -fx-border-color: #f1c40f; -fx-border-width: 5px;">
+          <padding>
+              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+          </padding>
+          <children>
+              <Label text="Échoppe du Marchand" textFill="#f1c40f">
+                  <font>
+                      <Font name="System Bold" size="36.0" />
+                  </font>
+              </Label>
+              <Label fx:id="goldLabel" text="Votre Or : 100 Or" textFill="WHITE">
+                  <font>
+                      <Font size="18.0" />
+                  </font>
+              </Label>
+              <HBox alignment="CENTER" spacing="30.0">
+                  <children>
+                      <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #34495e; -fx-background-radius: 10px; -fx-padding: 15px;">
+                          <children>
+                              <Label text="Lucky block" textFill="#e74c3c">
+                                  <font>
+                                      <Font name="System Bold" size="14.0" />
+                                  </font>
+                              </Label>
+                              <Label text="????????" textFill="WHITE" />
+                              <Button mnemonicParsing="false" onAction="#buySword" style="-fx-background-color: #f1c40f;" text="Acheter (200 Or)" />
+                          </children>
+                      </VBox>
+                      <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #34495e; -fx-background-radius: 10px; -fx-padding: 15px;">
+                          <children>
+                              <Label text="pack : Gourde de Yerba Maté (Playadito)" textFill="#2ecc71" wrapText="true">
+                                  <font>
+                                      <Font name="System Bold" size="14.0" />
+                                  </font>
+                              </Label>
+                              <Label fx:id="lbl_potion_stock" text="Restaure 150 HP / +2 objets" textFill="WHITE" />
+                              <Button mnemonicParsing="false" onAction="#buyPotion" style="-fx-background-color: #f1c40f;" text="Acheter (50 Or)" />
+                          </children>
+                      </VBox>
+                  </children>
+              </HBox>
+              <Label fx:id="messageLabel" text="Bienvenue ! Que désirez-vous ?" textFill="#bdc3c7" />
+              <Button mnemonicParsing="false" onAction="#closeShop" style="-fx-background-color: #95a5a6;" text="Quitter la boutique">
+                  <VBox.margin>
+                      <Insets top="20.0" />
+                  </VBox.margin>
+              </Button>
+          </children>
+      </VBox>
+   </children>
+</StackPane>
