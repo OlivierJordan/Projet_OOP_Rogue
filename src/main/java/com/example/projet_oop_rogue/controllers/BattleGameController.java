@@ -18,7 +18,7 @@ import java.util.Random;
 /**
  * Controler des séquences de combats
  */
-public class Game_Main extends Game {
+public class BattleGameController extends Game {
 
     public boolean Game_is_Win ;
     @FXML
@@ -211,7 +211,7 @@ public class Game_Main extends Game {
             btn_ult.setDisable(false);
             btn_object.setDisable(false);
             if (Game_is_Win){
-                sceneController.go_to_lobby();
+                ScenesController.go_to_lobby();
             }
         });
 
@@ -264,7 +264,7 @@ public class Game_Main extends Game {
             // vérification défaite
             /// change de scene ver la loosing screen
             if(main_character.vie_actuel <= 0){
-                sceneController.switchScene("/com/example/projet_oop_rogue/fxml/games/losing_screen.fxml");
+                ScenesController.switchScene("/com/example/projet_oop_rogue/fxml/games/losing_screen.fxml");
             }
         }
         /// actualise le score

@@ -13,7 +13,7 @@ import javafx.scene.text.Text;
 
 import java.util.Random;
 
-public class seconde_game_controler extends Game {
+public class PongGameController extends Game {
     // On injecte TOUS les composants du fichier FXML
     @FXML private Pane gamePane;
     @FXML private Rectangle paddle;
@@ -179,7 +179,7 @@ public class seconde_game_controler extends Game {
         subTitle.setStyle("-fx-font-weight: bold; -fx-font-size: 26px;"); // Plus aucune ombre noire ici
 
         screenOverlay.setVisible(true);// Réaffiche l'écran
-        sceneController.go_to_lobby();
+        ScenesController.go_to_lobby();
     }
 
     private void resetGameVariables() {

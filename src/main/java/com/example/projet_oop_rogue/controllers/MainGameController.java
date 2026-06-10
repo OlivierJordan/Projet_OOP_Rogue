@@ -1,23 +1,16 @@
 package com.example.projet_oop_rogue.controllers;
 
 import com.example.projet_oop_rogue.core.Game;
-import com.example.projet_oop_rogue.controllers.sceneController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.util.Random;
 
@@ -292,14 +285,14 @@ public class MainGameController extends Game {
      * @param enemyY La coordonnée Y de l'ennemi sur la grille logique.
      */
     private void startBattle(int enemyX, int enemyY) {
-        sceneController.switchScene("/com/example/projet_oop_rogue/fxml/games/Game_Main.fxml");
+        ScenesController.switchScene("/com/example/projet_oop_rogue/fxml/games/Game_Main.fxml");
     }
 
     /**
      * Ouvre l'interface de la boutique sous forme de fenêtre modale.
      */
     private void openShop() {
-        sceneController.openShop();
+        ScenesController.openShop();
     }
 
 
@@ -366,7 +359,7 @@ public class MainGameController extends Game {
      *
      * @param x Colonne de placement
      * @param y Ligne de placement
-     * @param imageSubPath Le nom du fichier image (ex: "silhouette.png")
+     * @param imageSubPath Le nom du fichier image (ex: "silhouette_chevalier.png")
      * @param type L'identifiant logique (4 pour ennemi, 5 pour Pong)
      * @param fallbackColor Couleur de secours si l'image manque
      */
@@ -555,8 +548,8 @@ public class MainGameController extends Game {
                     placeObstacle(x, y, "#1a252f", 1); // Fait appel à la sous-méthode pour créer un obstacle (mur) : Couleur gris/bleu très sombre et type 1
                 }
                 else if (cellData == 4) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence d'un ennemi
-                    // Place un ennemi (cherche l'image silhouette.png, sinon carré rouge)
-                    placeEntity(x, y, "characters/map/silhouette.png", 4, "#c0392b"); // On précise qu'il faut aller dans characters/map/
+                    // Place un ennemi (cherche l'image silhouette_chevalier.png, sinon carré rouge)
+                    placeEntity(x, y, "characters/map/silhouette_chevalier.png", 4, "#c0392b"); // On précise qu'il faut aller dans characters/map/
                 }
                 else if (cellData == 5) { // Vérifie si la valeur de la matrice fixe à ces coordonnées dicte la présence du mini jeu
                     // Place le déclencheur Pong (cherche l'image workbench.png, sinon carré jaune)
@@ -718,7 +711,7 @@ public class MainGameController extends Game {
                     battleLogs.appendText("\n> Vous avez trouvé la borne d'arcade mystère !");
                 }
                 // TODO : Lancer la scène du mini-jeu Pong ici
-                sceneController.switchGame();
+                ScenesController.switchGame();
             }
             else if (targetCell == 6) {
                 // Interaction avec le Magasin

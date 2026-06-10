@@ -5,7 +5,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<Pane fx:id="gamePane" prefHeight="500.0" prefWidth="800.0" style="-fx-background-image: url('/com/example/projet_oop_rogue/assets/ui/pong/background_pong.png'); -fx-background-size: cover; -fx-background-position: center;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_oop_rogue.controllers.seconde_game_controler">
+<Pane fx:id="gamePane" prefHeight="500.0" prefWidth="800.0" style="-fx-background-image: url('/com/example/projet_oop_rogue/assets/ui/pong/background_pong.png'); -fx-background-size: cover; -fx-background-position: center;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_oop_rogue.controllers.PongGameController">
    <ImageView fitHeight="569.0" fitWidth="800.0" pickOnBounds="true">
       <image>
          <Image url="@../../assets/ui/pong/background_pong.png" />

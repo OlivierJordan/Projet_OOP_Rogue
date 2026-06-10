@@ -7,12 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import java.io.IOException;
-
 /**
  * Classe qui contient tout les méthode pour changer de scene
  */
-public class sceneController  {
+public class ScenesController {
         private static Stage stage;
 
     /**
@@ -32,7 +30,7 @@ public class sceneController  {
             try {
 
                 FXMLLoader loader = new FXMLLoader(
-                        sceneController.class.getResource(fxmlFile)
+                        ScenesController.class.getResource(fxmlFile)
                 );
 
                 Parent root = loader.load();
@@ -54,7 +52,7 @@ public class sceneController  {
             try {
 
                 FXMLLoader loader = new FXMLLoader(
-                        sceneController.class.getResource("/com/example/projet_oop_rogue/fxml/games/seconde_game.fxml")
+                        ScenesController.class.getResource("/com/example/projet_oop_rogue/fxml/games/seconde_game.fxml")
                 );
 
                 Parent root = loader.load();
@@ -62,7 +60,7 @@ public class sceneController  {
                 Scene scene = new Scene(root);
 
                 // Récupération automatique du contrôleur pour lui lier les événements (Souris et Clavier)
-                seconde_game_controler controller = loader.getController();
+                PongGameController controller = loader.getController();
                 controller.setupInputs(scene);
 
                 stage.setTitle("Bonus game");
@@ -79,7 +77,7 @@ public class sceneController  {
         try {
 
             FXMLLoader loader = new FXMLLoader(
-                    sceneController.class.getResource("/com/example/projet_oop_rogue/fxml/ShopPage.fxml")
+                    ScenesController.class.getResource("/com/example/projet_oop_rogue/fxml/ShopPage.fxml")
             );
 
             Parent root = loader.load();
@@ -102,7 +100,7 @@ public class sceneController  {
     public static void go_to_lobby(){
         try {
             // 1. Initialiser le chargeur FXML avec le chemin vers la vue du jeu principal
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(sceneController.class.getResource("/com/example/projet_oop_rogue/fxml/games/MainGame.fxml"));
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(ScenesController.class.getResource("/com/example/projet_oop_rogue/fxml/games/MainGame.fxml"));
 
             // 2. Charger l'arbre des composants (la vue racine)
             javafx.scene.Parent root = loader.load();

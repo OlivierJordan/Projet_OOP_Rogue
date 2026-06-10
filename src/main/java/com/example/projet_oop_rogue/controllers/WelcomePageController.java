@@ -14,9 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 
 public class WelcomePageController extends Game {
 
@@ -153,7 +150,7 @@ public class WelcomePageController extends Game {
         nbr_obj = 10;
         stock_potion = 20;
         money = 0;
-        sceneController.go_to_lobby();
+        ScenesController.go_to_lobby();
 
         // TODO: Code pour charger "MainGame.fxml" et transmettre playerName et selectedClass au contrôleur principal
     }

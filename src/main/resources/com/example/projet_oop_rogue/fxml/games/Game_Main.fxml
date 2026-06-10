@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="457.0" prefWidth="702.0" scaleShape="false" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_oop_rogue.controllers.Game_Main">
+<AnchorPane prefHeight="457.0" prefWidth="702.0" scaleShape="false" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_oop_rogue.controllers.BattleGameController">
    <children>
       <ImageView fitHeight="343.0" fitWidth="714.0" pickOnBounds="true">
          <image>

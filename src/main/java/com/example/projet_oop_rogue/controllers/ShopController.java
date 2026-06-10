@@ -3,8 +3,7 @@ package com.example.projet_oop_rogue.controllers;
 import com.example.projet_oop_rogue.core.Game;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
-import com.example.projet_oop_rogue.controllers.sceneController;
+
 import java.util.Random;
 
 public class ShopController extends Game {
@@ -66,7 +65,7 @@ public class ShopController extends Game {
                     main_character.vie_actuel -= 100;
                     messageLabel.setText("Un slime à bondie du coffre : -100 PV !");
                     if (main_character.vie_actuel <= 0){
-                        sceneController.switchScene("/com/example/projet_oop_rogue/fxml/WelcomePage.fxml");
+                        ScenesController.switchScene("/com/example/projet_oop_rogue/fxml/WelcomePage.fxml");
                     }
                     break;
                 case 3:
@@ -103,6 +102,6 @@ public class ShopController extends Game {
 
     @FXML
     private void closeShop() {
-        sceneController.go_to_lobby();
+        ScenesController.go_to_lobby();
     }
 }

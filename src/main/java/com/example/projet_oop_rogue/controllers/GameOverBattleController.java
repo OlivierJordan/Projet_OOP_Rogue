@@ -1,5 +1,4 @@
 package com.example.projet_oop_rogue.controllers;
-import static com.example.projet_oop_rogue.controllers.sceneController.switchScene;
 
 import com.example.projet_oop_rogue.core.Game;
 import javafx.fxml.FXML;
@@ -10,7 +9,7 @@ import java.io.IOException;
 /**
  * Controler du losing screen qui indique que le joueur est mort
  */
-public class losing_screen_controler extends Game{
+public class GameOverBattleController extends Game{
     @FXML
     private Label lbl_floor;
 
@@ -27,7 +26,7 @@ public class losing_screen_controler extends Game{
      */
     @FXML
     protected void on_btn_restart() throws IOException {
-        sceneController.switchScene("/com/example/projet_oop_rogue/fxml/WelcomePage.fxml");
+        ScenesController.switchScene("/com/example/projet_oop_rogue/fxml/WelcomePage.fxml");
         //sceneController.switchGame();
     }
 }
