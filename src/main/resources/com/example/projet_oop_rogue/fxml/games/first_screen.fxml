@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_oop_rogue.controllers.first_screen_controler">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="600.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../assets/characters/background.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="70.0" fitWidth="195.0" layoutX="234.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../assets/btn.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btn_start" layoutX="220.0" layoutY="287.0" mnemonicParsing="false" onAction="#on_btn_start" prefHeight="70.0" prefWidth="171.0" style="-fx-background-color: transparent;" text="Lets start">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.3149779819706988" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.20103703439235687" green="0.04830409213900566" blue="0.621052622795105" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.7263157963752747" green="0.09953216463327408" blue="0.09953216463327408" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill></Button>
+      <Label layoutX="168.0" layoutY="252.0" prefHeight="39.0" prefWidth="331.0" text="Click ici pour commencer une run" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.3149779819706988" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.4208517074584961" green="0.6200000047683716" blue="0.04960000142455101" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.10080000013113022" green="0.7200000286102295" blue="0.6799655556678772" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill></Label>
+      <Label layoutX="58.0" layoutY="32.0" prefHeight="70.0" prefWidth="526.0" text="HES : echoes of doom " textOverrun="WORD_ELLIPSIS">
+         <font>
+            <Font size="48.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="WAIT" />
+         </cursor>
+         <textFill>
+            <RadialGradient centerX="0.45154187542751495" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.7894737124443054" green="0.02631578966975212" blue="0.02631578966975212" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.4890109890109889">
+                     <color>
+                        <Color red="0.7799999713897705" green="0.031199999153614044" blue="0.031199999153614044" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Label>
+   </children>
+</AnchorPane>
