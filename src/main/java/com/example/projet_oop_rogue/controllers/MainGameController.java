@@ -96,7 +96,7 @@ public class MainGameController extends Game {
 */
 
     // Génération de la map avec zones protégées (3)
-    private static final int RANDOM_OBSTACLES_COUNT = 8; // On peut mettre un peu plus de rochers car la carte est plus grande
+    private static final int RANDOM_OBSTACLES_COUNT = 20; // On peut mettre un peu plus de rochers car la carte est plus grande
     private int[][] obstacleGrid; // Matrice logique 2D mémorisant les collisions : 0 = vide, 1 = mur fixe, 2 = rocher, 3 = zone protégée
 
     /**
@@ -119,14 +119,14 @@ public class MainGameController extends Game {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 5, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0}, // Ligne 1 : Pong à gauche, Ennemi 1 à droite
             {0, 3, 3, 3, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 3, 3, 0},
-            {0, 0, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-            {0, 1, 1, 1, 1, 1, 0, 0, 1, 4, 3, 3, 1, 0, 0, 1, 1, 1, 1, 0}, // Ligne 4 : Ennemi 2 dans la structure centrale
+            {0, 0, 3, 0, 0, 0, 0, 0, 1, 0, 0, 4, 1, 0, 0, 0, 0, 0, 0, 0},
+            {0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 3, 3, 1, 0, 0, 1, 1, 1, 1, 0}, // Ligne 4 : Ennemi 2 dans la structure centrale
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // Ligne 5 : Spawn Joueur au centre
             {0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0},
             {0, 0, 1, 4, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 4, 3, 1, 0}, // Ligne 7 : Ennemi 3 (gauche) et Ennemi 4 (droite)
-            {0, 0, 1, 3, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 3, 1, 0},
-            {0, 0, 3, 3, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 3, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // Ligne 10 : Ennemi 5 (bas centre)
+            {0, 0, 1, 3, 1, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 1, 1, 3, 1, 0},
+            {0, 0, 3, 3, 0, 0, 0, 0, 1, 3, 1, 0, 0, 0, 0, 0, 0, 3, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // Ligne 10 : Ennemi 5 (bas centre)
             {0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
@@ -567,13 +567,18 @@ public class MainGameController extends Game {
         Random random = new Random(); // Instancie le générateur de nombres pseudo-aléatoires de Java
         int randomsPlaced = 0; // Initialise le compteur d'obstacles placés avec succès
 
+// Maintenant que le point de spawn est aléatoire, ces variables ne sont plus strictement nécessaires
+/*
         int startX = 10; // Enregistre la coordonnée X fixe où le joueur apparaîtra
         int startY = 5; // Enregistre la coordonnée Y fixe où le joueur apparaîtra
+*/
 
         while (randomsPlaced < RANDOM_OBSTACLES_COUNT) { // Continue la boucle tant que le quota d'obstacles défini n'est pas atteint
             int rx = random.nextInt(GRID_WIDTH); // Génère une coordonnée X aléatoire comprise dans les limites de la grille
             int ry = random.nextInt(GRID_HEIGHT); // Génère une coordonnée Y aléatoire comprise dans les limites de la grille
 
+// Maintenant que le point de spawn est aléatoire, plus besoin de vérifier que ce n'est pas le point d'apparition du joueur
+/*
             // Évaluation de validité :
             // On ne pose un rocher QUE si la matrice physique est vide (0)
             // ET que le plan du monde indique que ce n'est pas une zone protégée (worldMap != 3)
@@ -581,6 +586,15 @@ public class MainGameController extends Game {
             if (obstacleGrid[rx][ry] == 0 && worldMap[ry][rx] != 3 && !(rx == startX && ry == startY)) {
                 // On place un petit rocher (couleur légèrement différente pour les différencier)
                 placeObstacle(rx, ry, "#7f8c8d", 2); // Fait appel à la sous-méthode pour créer un rocher aléatoire : Couleur gris clair et type 2
+                randomsPlaced++; // Incrémente le compteur pour valider la pose de cet obstacle
+            }
+*/
+            // Évaluation de validité :
+            // On ne pose un rocher QUE si la matrice physique est vide (0)
+            // ET que le plan du monde indique que ce n'est pas une zone protégée (worldMap != 3)
+            if (obstacleGrid[rx][ry] == 0 && worldMap[ry][rx] != 3) {
+                // On place un petit rocher (couleur légèrement différente pour les différencier)
+                placeObstacle(rx, ry, "#7f8c8d", 2);
                 randomsPlaced++; // Incrémente le compteur pour valider la pose de cet obstacle
             }
         }
@@ -621,12 +635,24 @@ public class MainGameController extends Game {
             // 3. Définition des coordonnées de départ (au centre mathématique de la grille)
             playerX = GRID_WIDTH / 2;
             playerY = GRID_HEIGHT / 2;
-*/
+
             // 3. Définition des coordonnées de départ
             playerX = 10; // Assigne mathématiquement la colonne de départ au joueur
             playerY = 5; // Assigne mathématiquement la ligne de départ au joueur
+*/
 
-            // 4. Ajout de l'image dans le GridPane par-dessus le sol
+            // NOUVEAU : ALGORITHME DE SPAWN ALÉATOIRE DU HEROS SÉCURISÉ
+            java.util.Random random = new java.util.Random();
+
+            // La boucle va tourner tant que la case choisie au hasard contient un obstacle,
+            // un ennemi, un mini-jeu ou une boutique (c'est-à-dire tant que sa valeur n'est pas 0)
+            do {
+                playerX = random.nextInt(GRID_WIDTH);  // Tire une colonne au hasard entre 0 et 19
+                playerY = random.nextInt(GRID_HEIGHT); // Tire une ligne au hasard entre 0 et 12
+            } while (obstacleGrid[playerX][playerY] != 0);
+
+
+            // 4. Ajout de l'image dans le GridPane à sa position aléatoire validée
             gameBoard.add(playerSprite, playerX, playerY);
 
         } catch (Exception e) {
