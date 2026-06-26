@@ -19,3 +19,5 @@
 ## Notes sur la persistance (Scores)
 Le système de leaderboard lit et écrit dans un fichier nommé `leaderboard.csv`. Ce fichier sera créé automatiquement à la racine de votre dossier d'exécution à la fin de la première partie s'il n'existe pas déjà.
 
+## Notes
+This README content was written by Gemini
